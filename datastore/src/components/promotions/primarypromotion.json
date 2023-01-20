@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_promotions_primarypromotions",
+  "info": {
+    "displayName": "primarypromotion"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "content": {
+      "type": "text"
+    },
+    "cta": {
+      "type": "text"
+    }
+  }
+}
