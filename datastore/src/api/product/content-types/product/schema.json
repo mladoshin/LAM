@@ -19,7 +19,7 @@
       "required": true
     },
     "price": {
-      "type": "float"
+      "type": "integer"
     },
     "image": {
       "type": "media",
@@ -70,20 +70,29 @@
         "women"
       ]
     },
-    "products": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product",
-      "inversedBy": "varieties"
+    "color": {
+      "type": "string"
+    },
+    "original_price": {
+      "type": "integer",
+      "min": 0
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.seo"
     },
     "varieties": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "oneToMany",
       "target": "api::product.product",
-      "inversedBy": "products"
+      "mappedBy": "variety"
     },
-    "color": {
-      "type": "string"
+    "variety": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "varieties"
     }
   }
 }

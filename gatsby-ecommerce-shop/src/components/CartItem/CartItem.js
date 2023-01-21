@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import AdjustItem from '../AdjustItem';
-import CurrencyFormatter from '../CurrencyFormatter';
+import CurrencyFormatter from '../PriceFormatter';
 import Drawer from '../Drawer';
 import RemoveItem from '../RemoveItem';
 import QuickView from '../QuickView';

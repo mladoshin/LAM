@@ -108,6 +108,7 @@ export const query = graphql`
         node {
           id
           collection_gender
+          original_price
           categories {
             id
             slug

@@ -30,6 +30,7 @@ exports.createPages = async ({ graphql, actions }) => {
             color
             price
             collection_gender
+            original_price
             image {
               url
             }
@@ -39,6 +40,7 @@ exports.createPages = async ({ graphql, actions }) => {
             }
             options {
               sizes
+              colors
             }
             categories {
               name

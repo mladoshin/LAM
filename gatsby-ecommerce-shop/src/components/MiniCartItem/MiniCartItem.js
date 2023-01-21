@@ -2,7 +2,7 @@ import React from 'react';
 
 import { navigate } from 'gatsby';
 import AdjustItem from '../AdjustItem';
-import CurrencyFormatter from '../CurrencyFormatter';
+import CurrencyFormatter from '../PriceFormatter';
 import RemoveItem from '../RemoveItem';
 
 import * as styles from './MiniCartItem.module.css';

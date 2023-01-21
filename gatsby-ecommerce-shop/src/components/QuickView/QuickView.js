@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import Button from '../Button';
-import CurrencyFormatter from '../CurrencyFormatter';
+import CurrencyFormatter from '../PriceFormatter';
 import SizeList from '../SizeList';
 import SwatchList from '../SwatchList';
 

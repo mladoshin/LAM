@@ -3,7 +3,8 @@ import { navigate } from 'gatsby';
 import * as styles from './ProductCard.module.css';
 
 import Icon from '../Icons/Icon';
-import CurrencyFormatter from '../CurrencyFormatter';
+import CurrencyFormatter from '../PriceFormatter';
+import PriceFormatter from '../PriceFormatter';
 
 const ProductCard = (props) => {
   const [isWishlist, setIsWishlist] = useState(false);
@@ -69,11 +70,11 @@ const ProductCard = (props) => {
           <span
             className={`${originalPrice !== undefined ? styles.salePrice : ''}`}
           >
-            <CurrencyFormatter amount={price}></CurrencyFormatter>
+            <PriceFormatter amount={price}/>
           </span>
-          {originalPrice && (
+          {originalPrice > 0 && (
             <span className={styles.originalPrice}>
-              <CurrencyFormatter amount={originalPrice}></CurrencyFormatter>
+              <PriceFormatter amount={originalPrice}/>
             </span>
           )}
         </div>

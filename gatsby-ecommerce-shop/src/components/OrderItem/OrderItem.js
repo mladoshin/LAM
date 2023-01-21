@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
 
-import CurrencyFormatter from '../CurrencyFormatter';
+import CurrencyFormatter from '../PriceFormatter';
 import Icon from '../Icons/Icon';
 import * as styles from './OrderItem.module.css';
 

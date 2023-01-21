@@ -2,7 +2,7 @@ import { Link, navigate } from 'gatsby';
 import React from 'react';
 
 import Button from '../Button';
-import CurrencyFormatter from '../CurrencyFormatter';
+import CurrencyFormatter from '../PriceFormatter';
 import MiniCartItem from '../MiniCartItem';
 
 import * as styles from './MiniCart.module.css';

@@ -27,7 +27,7 @@ const ProductCardGrid = (props) => {
           slug={product.slug}
           image={Array.isArray(product.image) ? `${config.STRAPI_API_URL}${product.image[0].url}` : ''}
           meta={product.meta || ""}
-          originalPrice={product.originalPrice || 0}
+          originalPrice={product.original_price || 0}
           link={product.link || 0}
           showQuickView={() => setShowQuickView(true)}
         />

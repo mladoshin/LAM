@@ -3,7 +3,7 @@ import { Link, navigate } from 'gatsby';
 
 import Button from '../Button';
 import FormInputField from '../FormInputField/FormInputField';
-import CurrencyFormatter from '../CurrencyFormatter';
+import CurrencyFormatter from '../PriceFormatter';
 
 import * as styles from './OrderSummary.module.css';
 

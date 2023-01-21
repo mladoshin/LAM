@@ -6,7 +6,7 @@ import AdjustItem from '../../components/AdjustItem';
 import Button from '../../components/Button';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import Container from '../../components/Container';
-import CurrencyFormatter from '../../components/CurrencyFormatter';
+import CurrencyFormatter from '../../components/PriceFormatter';
 import Gallery from '../../components/Gallery';
 import SizeList from '../../components/SizeList';
 import Split from '../../components/Split';
@@ -20,6 +20,7 @@ import { graphql, navigate } from 'gatsby';
 
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 import config from '../../config.json'
+import PriceFormatter from '../../components/PriceFormatter';
 
 const ProductPage = (props) => {
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
@@ -28,14 +29,14 @@ const ProductPage = (props) => {
   const [qty, setQty] = useState(0);
   const [isWishlist, setIsWishlist] = useState(false);
   const product = props.pageContext.product
-
   const [activeSwatch, setActiveSwatch] = useState(product.color);
   const [activeSize, setActiveSize] = useState(product.options?.sizes[0] || "");
   // const suggestions = generateMockProductData(4, 'woman');
-  
+
   // console.log(props)
-  const suggestions = props.data.allStrapiProduct.edges?.map(edge => ({...edge.node}))?.filter(edge => edge.slug !== product.slug)
-  console.log(suggestions)
+  const suggestions = props.data.allStrapiProduct.edges?.map(edge => ({ ...edge.node }))?.filter(edge => edge.slug !== product.slug)
+
+  const baseSlug = product.slug.replace(product.color, "")
 
   return (
     <Layout>
@@ -51,31 +52,36 @@ const ProductPage = (props) => {
           />
           <div className={styles.content}>
             <div className={styles.gallery}>
-              <Gallery images={product.image.map(img => ({alt: 'img', image: `${config.STRAPI_API_URL}${img.url}`}))} />
+              <Gallery images={product.image.map(img => ({ alt: 'img', image: `${config.STRAPI_API_URL}${img.url}` }))} />
             </div>
             <div className={styles.details}>
               <h1>{product.title}</h1>
               <span className={styles.vendor}> by {sampleProduct.vendor}</span>
 
               <div className={styles.priceContainer}>
-                <span>{`${product.price} руб`}</span>
+                {/* <span>{`${product.price} руб.`}</span> */}
+                <PriceFormatter amount={product.price}/>
               </div>
 
-              <div>
-                <SwatchList
-                  swatchList={[...product.varieties?.map(v => ({color: v.color, slug: v.slug})), {color: product.color, slug: product.slug}]}
-                  activeSwatch={activeSwatch}
-                  setActiveSwatch={setActiveSwatch}
-                />
-              </div>
+              {product.options?.colors?.length > 0 &&
+                <div>
+                  <SwatchList
+                    swatchList={product.options?.colors.map(c => ({ color: c, slug: `${baseSlug}${c}` }))}
+                    activeSwatch={activeSwatch}
+                    setActiveSwatch={setActiveSwatch}
+                  />
+                </div>
+              }
 
-              <div className={styles.sizeContainer}>
-                <SizeList
-                  sizeList={product.options?.sizes || []}
-                  activeSize={activeSize}
-                  setActiveSize={setActiveSize}
-                />
-              </div>
+              {product.options?.sizes?.length > 0 &&
+                <div className={styles.sizeContainer}>
+                  <SizeList
+                    sizeList={product.options?.sizes || []}
+                    activeSize={activeSize}
+                    setActiveSize={setActiveSize}
+                  />
+                </div>
+              }
 
               <div className={styles.quantityContainer}>
                 <span>Quantity</span>
@@ -107,10 +113,10 @@ const ProductPage = (props) => {
                 </div>
               </div>
 
-              <div className={styles.description}>
+              {/* <div className={styles.description}>
                 <p>{product.description.data.description}</p>
                 <span>Product code: {sampleProduct.productCode}</span>
-              </div>
+              </div> */}
 
               <div className={styles.informationContainer}>
                 <Accordion
@@ -139,7 +145,8 @@ const ProductPage = (props) => {
               </div>
             </div>
           </div>
-          <div className={styles.suggestionContainer}>
+          {suggestions?.length > 0 && 
+            <div className={styles.suggestionContainer}>
             <h2>You may also like</h2>
             <ProductCardGrid
               spacing
@@ -149,6 +156,7 @@ const ProductPage = (props) => {
               data={suggestions}
             />
           </div>
+          }
         </Container>
 
         <div className={styles.attributeContainer}>

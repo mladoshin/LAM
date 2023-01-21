@@ -4,6 +4,7 @@ import * as styles from './Swatch.module.css';
 
 const Swatch = (props) => {
   const { data, setActiveSwatch, isActive } = props;
+  const colors = data.color.split("-")
 
   return (
     <button
@@ -14,13 +15,16 @@ const Swatch = (props) => {
         const path = window.location.pathname.split('/')
         path.splice(-1, 1)
         navigate(`${window.location.origin}${path.join('/')}/${data.slug}`)
-        //navigate(new_path)
       }}
     >
       <div
-        style={{ backgroundColor: data.color }}
+        style={{ backgroundColor: data.color, display: "flex"}}
         className={styles.circle}
-      ></div>
+      >
+        {colors.map(col => (
+          <div style={{ backgroundColor: col, flexGrow: 1}}></div>
+        ))}
+      </div>
     </button>
   );
 };
