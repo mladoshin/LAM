@@ -69,6 +69,21 @@
         "men",
         "women"
       ]
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "inversedBy": "varieties"
+    },
+    "varieties": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "inversedBy": "products"
+    },
+    "color": {
+      "type": "string"
     }
   }
 }

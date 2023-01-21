@@ -16,7 +16,7 @@ import Layout from '../../components/Layout/Layout';
 import { generateMockProductData } from '../../helpers/mock';
 import Icon from '../../components/Icons/Icon';
 import ProductCardGrid from '../../components/ProductCardGrid';
-import { navigate } from 'gatsby';
+import { graphql, navigate } from 'gatsby';
 
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 import config from '../../config.json'
@@ -27,14 +27,15 @@ const ProductPage = (props) => {
   const sampleProduct = generateMockProductData(1, 'sample')[0];
   const [qty, setQty] = useState(0);
   const [isWishlist, setIsWishlist] = useState(false);
-  const [activeSwatch, setActiveSwatch] = useState(
-    sampleProduct.colorOptions[0]
-  );
-  const [activeSize, setActiveSize] = useState(sampleProduct.sizeOptions[0]);
-  const suggestions = generateMockProductData(4, 'woman');
-
-  console.log(props.pageContext.product)
   const product = props.pageContext.product
+
+  const [activeSwatch, setActiveSwatch] = useState(product.color);
+  const [activeSize, setActiveSize] = useState(product.options?.sizes[0] || "");
+  // const suggestions = generateMockProductData(4, 'woman');
+  
+  // console.log(props)
+  const suggestions = props.data.allStrapiProduct.edges?.map(edge => ({...edge.node}))?.filter(edge => edge.slug !== product.slug)
+  console.log(suggestions)
 
   return (
     <Layout>
@@ -57,12 +58,12 @@ const ProductPage = (props) => {
               <span className={styles.vendor}> by {sampleProduct.vendor}</span>
 
               <div className={styles.priceContainer}>
-                <CurrencyFormatter appendZero amount={product.price} />
+                <span>{`${product.price} руб`}</span>
               </div>
 
               <div>
                 <SwatchList
-                  swatchList={sampleProduct.colorOptions}
+                  swatchList={[...product.varieties?.map(v => ({color: v.color, slug: v.slug})), {color: product.color, slug: product.slug}]}
                   activeSwatch={activeSwatch}
                   setActiveSwatch={setActiveSwatch}
                 />
@@ -70,7 +71,7 @@ const ProductPage = (props) => {
 
               <div className={styles.sizeContainer}>
                 <SizeList
-                  sizeList={sampleProduct.sizeOptions}
+                  sizeList={product.options?.sizes || []}
                   activeSize={activeSize}
                   setActiveSize={setActiveSize}
                 />
@@ -167,5 +168,24 @@ const ProductPage = (props) => {
     </Layout>
   );
 };
+
+
+export const query = graphql`
+  query ($filter: STRAPI_PRODUCTFilterInput) {
+    allStrapiProduct(filter: $filter) {
+      edges {
+        node {
+          id
+          slug
+          price
+          image {
+            url
+          }
+          title
+        }
+      }
+    }
+  }
+`
 
 export default ProductPage;

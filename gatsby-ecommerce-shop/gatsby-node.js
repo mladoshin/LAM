@@ -27,10 +27,18 @@ exports.createPages = async ({ graphql, actions }) => {
             title
             stock
             status
+            color
             price
             collection_gender
             image {
               url
+            }
+            varieties {
+              slug
+              color
+            }
+            options {
+              sizes
             }
             categories {
               name
@@ -118,7 +126,8 @@ exports.createPages = async ({ graphql, actions }) => {
       context: {
         // This time the entire product is passed down as context
         crumbs: [node.slug, node.title],
-        product: node
+        product: node,
+        filter: {categories: {elemMatch: {slug: {eq: node.categories[0]?.slug || ""}}}, collection_gender: {eq: node.collection_gender}}
       },
     })
 

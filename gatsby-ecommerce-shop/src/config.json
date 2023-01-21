@@ -96,23 +96,23 @@
           "submenu": [
             {
               "menuLabel": "Все аксессуары",
-              "menuLink": "/shop"
+              "menuLink": "/shop/women"
             },
             {
               "menuLabel": "Сумки",
-              "menuLink": "/shop"
+              "menuLink": "/shop/women/bags"
             },
             {
               "menuLabel": "Рюкзаки",
-              "menuLink": "/shop"
+              "menuLink": "/shop/women/backpacks"
             },
             {
               "menuLabel": "Портмоне и кошельки",
-              "menuLink": "/shop"
+              "menuLink": "/shop/women/wallets"
             },
             {
               "menuLabel": "Платки и шарфы",
-              "menuLink": "/shop"
+              "menuLink": "/shop/women/scarves"
             }
           ]
         },
@@ -121,19 +121,19 @@
           "submenu": [
             {
               "menuLabel": "Все аксессуары",
-              "menuLink": "/shop"
+              "menuLink": "/shop/men"
             },
             {
               "menuLabel": "Рюкзаки и сумки",
-              "menuLink": "/shop"
+              "menuLink": "/shop/men/backpacks"
             },
             {
               "menuLabel": "Кошельки",
-              "menuLink": "/shop"
+              "menuLink": "/shop/men/wallets"
             },
             {
               "menuLabel": "Ремни",
-              "menuLink": "/shop"
+              "menuLink": "/shop/men/belts"
             }
           ]
         }
