@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_policies_delivery_return_policies",
+  "info": {
+    "displayName": "DeliveryReturnPolicy"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "richtext"
+    }
+  }
+}

@@ -8,25 +8,8 @@ import Drawer from '../Drawer';
 import Icon from '../Icons/Icon';
 
 const CardController = (props) => {
-  const { filters, visible, closeFilter } = props;
+  const { state: filterState, visible, closeFilter, filterTick, resetFilter } = props;
   const [category, setCategory] = useState();
-  const [filterState, setFilterState] = useState(filters);
-
-  const filterTick = (e, categoryIndex, labelIndex) => {
-    const filterStateCopy = [...filterState];
-    filterStateCopy[categoryIndex].items[labelIndex].value = e.target.checked;
-    setFilterState(filterStateCopy);
-  };
-
-  const resetFilter = () => {
-    const filterStateCopy = [...filterState];
-    for (let x = 0; x < filterStateCopy.length; x++) {
-      for (let y = 0; y < filterStateCopy[x].items.length; y++) {
-        filterStateCopy[x].items[y].value = false;
-      }
-    }
-    setFilterState(filterStateCopy);
-  };
 
   return (
     <div>

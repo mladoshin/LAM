@@ -21,6 +21,7 @@
 }
 
 .controllerContainer {
+    position: relative;
     display: flex;
     gap: 48px;
 }

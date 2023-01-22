@@ -1,8 +1,10 @@
 import React from 'react';
 import * as styles from './Banner.module.css';
+import config from "../../config.json"
 
 const Banner = (props) => {
   const {
+    banner,
     maxWidth,
     name,
     subtitle,
@@ -15,7 +17,7 @@ const Banner = (props) => {
 
   const customStyling = {
     backgroundColor: bgColor,
-    backgroundImage: bgImage !== undefined ? `url(${bgImage})` : 'none',
+    backgroundImage: banner.image?.url !== undefined ? `url(${config.STRAPI_API_URL}${banner.image.url})` : 'none',
     height: height,
     color: color,
   };
@@ -23,14 +25,14 @@ const Banner = (props) => {
   return (
     <div className={styles.root} style={customStyling}>
       <div className={styles.content} style={{ maxWidth: maxWidth }}>
-        <h2>{name}</h2>
+        <h2>{banner?.title}</h2>
         {subtitle && (
           <span
             className={`${styles.subtitle} ${
               hideSubtitleOnMobile === true ? styles.hideSubtitleOnMobile : ''
             }`}
           >
-            {subtitle}
+            {banner?.cta}
           </span>
         )}
       </div>

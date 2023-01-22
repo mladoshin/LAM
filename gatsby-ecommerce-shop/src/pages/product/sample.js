@@ -21,6 +21,8 @@ import { graphql, navigate } from 'gatsby';
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 import config from '../../config.json'
 import PriceFormatter from '../../components/PriceFormatter';
+import capitilize from '../../helpers/capitilize';
+import StockInfo from '../../components/StockInfo';
 
 const ProductPage = (props) => {
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
@@ -29,8 +31,10 @@ const ProductPage = (props) => {
   const [qty, setQty] = useState(0);
   const [isWishlist, setIsWishlist] = useState(false);
   const product = props.pageContext.product
+  const policy = props.pageContext.policy
+
   const [activeSwatch, setActiveSwatch] = useState(product.color);
-  const [activeSize, setActiveSize] = useState(product.options?.sizes[0] || "");
+  const [activeSize, setActiveSize] = useState(Array.isArray(product.options?.sizes) ? product.options?.sizes[0] : "");
   // const suggestions = generateMockProductData(4, 'woman');
 
   // console.log(props)
@@ -38,17 +42,21 @@ const ProductPage = (props) => {
 
   const baseSlug = product.slug.replace(product.color, "")
 
+  let link = ""
+  const crumbs = props.pageContext.crumbs?.map((el, idx) => {
+    link += (el+'/')
+
+    return {label: capitilize(el), link: idx===props.pageContext.crumbs.length-1 ? window.location.href: `${window.location.origin}/shop/${link}`}
+  })
+
+  console.log(product)
+
   return (
     <Layout>
       <div className={styles.root}>
         <Container size={'large'} spacing={'min'}>
           <Breadcrumbs
-            crumbs={[
-              { link: '/', label: 'Home' },
-              { label: 'Men', link: '/shop' },
-              { label: 'Sweater', link: '/shop' },
-              { label: `${product.title}` },
-            ]}
+            crumbs={crumbs}
           />
           <div className={styles.content}>
             <div className={styles.gallery}>
@@ -56,11 +64,11 @@ const ProductPage = (props) => {
             </div>
             <div className={styles.details}>
               <h1>{product.title}</h1>
-              <span className={styles.vendor}> by {sampleProduct.vendor}</span>
 
               <div className={styles.priceContainer}>
                 {/* <span>{`${product.price} руб.`}</span> */}
-                <PriceFormatter amount={product.price}/>
+                <PriceFormatter amount={product.price} />
+                <StockInfo stock={product.stock}/>
               </div>
 
               {product.options?.colors?.length > 0 &&
@@ -84,7 +92,7 @@ const ProductPage = (props) => {
               }
 
               <div className={styles.quantityContainer}>
-                <span>Quantity</span>
+                <span>Количество</span>
                 <AdjustItem qty={qty} setQty={setQty} />
               </div>
 
@@ -95,7 +103,7 @@ const ProductPage = (props) => {
                     fullWidth
                     level={'primary'}
                   >
-                    Add to Bag
+                    Добавить в корзину
                   </Button>
                 </div>
                 <div
@@ -122,44 +130,61 @@ const ProductPage = (props) => {
                 <Accordion
                   type={'plus'}
                   customStyle={styles}
-                  title={'composition & care'}
+                  title={'Материалы'}
                 >
                   <p className={styles.information}>
-                    {sampleProduct.description}
+                    {product.materials?.data?.materials}
                   </p>
                 </Accordion>
+
                 <Accordion
                   type={'plus'}
                   customStyle={styles}
-                  title={'delivery & returns'}
+                  title={'Доставка и оплата'}
                 >
                   <p className={styles.information}>
-                    {sampleProduct.description}
+                    {policy.delivery?.data.delivery}
+                  </p>
+                  <p className={styles.information}>
+                    {policy.payment?.data.payment}
                   </p>
                 </Accordion>
-                <Accordion type={'plus'} customStyle={styles} title={'help'}>
+
+                <Accordion
+                  type={'plus'}
+                  customStyle={styles}
+                  title={'Гарантия и возврат'}
+                >
+                  <p className={styles.information}>
+                    {policy.guarantee?.data.guarantee}
+                  </p>
+                  <p className={styles.information}>
+                    {policy.return?.data.return}
+                  </p>
+                </Accordion>
+                {/* <Accordion type={'plus'} customStyle={styles} title={'help'}>
                   <p className={styles.information}>
                     {sampleProduct.description}
                   </p>
-                </Accordion>
+                </Accordion> */}
               </div>
             </div>
           </div>
-          {suggestions?.length > 0 && 
+          {suggestions?.length > 0 &&
             <div className={styles.suggestionContainer}>
-            <h2>You may also like</h2>
-            <ProductCardGrid
-              spacing
-              showSlider
-              height={400}
-              columns={4}
-              data={suggestions}
-            />
-          </div>
+              <h2>Рекомендуем также</h2>
+              <ProductCardGrid
+                spacing
+                showSlider
+                height={400}
+                columns={4}
+                data={suggestions}
+              />
+            </div>
           }
         </Container>
 
-        <div className={styles.attributeContainer}>
+        {/* <div className={styles.attributeContainer}>
           <Split
             image={'/cloth.png'}
             alt={'attribute description'}
@@ -171,7 +196,7 @@ const ProductPage = (props) => {
             cta={() => navigate('/blog')}
             bgColor={'var(--standard-light-grey)'}
           />
-        </div>
+        </div> */}
       </div>
     </Layout>
   );

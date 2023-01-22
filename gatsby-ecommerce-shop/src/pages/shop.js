@@ -14,10 +14,18 @@ import { generateMockProductData } from '../helpers/mock';
 import Button from '../components/Button';
 import Config from '../config.json';
 import { graphql } from 'gatsby';
+import capitilize from '../helpers/capitilize';
+import useFilter from '../hooks/useFilter';
+import SortDropdown from '../components/SortDropdown';
+
 
 const ShopPage = (props) => {
+  const products = props.data.allStrapiProduct.edges.map(n => ({ ...n.node }))
+
   const [showFilter, setShowFilter] = useState(false);
-  const data = generateMockProductData(6, 'woman');
+  const [showSort, setShowSort] = useState(false);
+  // const [filteredProducts, setFilteredProducts] = useState(products)
+  const { filteredProducts, filterState, filterTick, resetFilter, sortState, setSortState } = useFilter({ products })
 
   useEffect(() => {
     window.addEventListener('keydown', escapeHandler);
@@ -29,13 +37,18 @@ const ShopPage = (props) => {
     if (e.keyCode === 27) setShowFilter(false);
   };
 
-  const products = props.data.allStrapiProduct.edges.map(n => ({...n.node}))
   const prefix = props.pageContext.prefix || 'shop'
   let link = ""
   const crumbs = props.pageContext.crumbs?.map((el, idx) => {
-    link += (el+'/')
-    return {label: el, link: `${props.location.origin}/${prefix}/${link}`}
+    link += (el + '/')
+    return { label: capitilize(el), link: `${props.location.origin}/${prefix}/${link}` }
   })
+
+  const collection_gender = props.pageContext.filter.collection_gender.eq
+  const banner = collection_gender === 'men' ?
+    { ...props.data.strapiCategory.mhero, image: props.data.strapiCategory.men_img }
+    :
+    { ...props.data.strapiCategory.whero, image: props.data.strapiCategory.women_img }
 
   return (
     <Layout>
@@ -49,10 +62,7 @@ const ShopPage = (props) => {
         </Container>
         <Banner
           maxWidth={'650px'}
-          name={`Woman's Sweaters`}
-          subtitle={
-            'Look to our women’s sweaters for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
-          }
+          banner={banner}
         />
         <Container size={'large'} spacing={'min'}>
           <div className={styles.metaContainer}>
@@ -66,18 +76,24 @@ const ShopPage = (props) => {
                 <Icon symbol={'filter'} />
                 <span>Filters</span>
               </div>
-              <div
+              {/* <div
                 className={`${styles.iconContainer} ${styles.sortContainer}`}
+                onClick={() => setShowSort(s => !s)}
+                style={{position: 'relative'}}
               >
                 <span>Sort by</span>
                 <Icon symbol={'caret'} />
-              </div>
+                <SortPanel open={showSort} options={Object.values(Config.sort).map(sk => ({sort: sk, order: Config.sortOrder.DESC}))}/>
+              </div> */}
+              <SortDropdown sortState={sortState} setSortState={setSortState} showSort={showSort} setShowSort={setShowSort}/>
             </div>
           </div>
           <CardController
             closeFilter={() => setShowFilter(false)}
             visible={showFilter}
-            filters={Config.filters}
+            state={filterState}
+            filterTick={filterTick}
+            resetFilter={resetFilter}
           />
           <div className={styles.chipsContainer}>
             <Chip name={'XS'} />
@@ -85,7 +101,7 @@ const ShopPage = (props) => {
           </div>
           <div className={styles.productContainer}>
             <span className={styles.mobileItemCount}>476 items</span>
-            <ProductCardGrid data={products}></ProductCardGrid>
+            <ProductCardGrid data={filteredProducts}></ProductCardGrid>
           </div>
           <div className={styles.loadMoreContainer}>
             <span>6 of 456</span>
@@ -102,7 +118,23 @@ const ShopPage = (props) => {
 };
 
 export const query = graphql`
-  query ($filter: STRAPI_PRODUCTFilterInput) {
+  query ($filter: STRAPI_PRODUCTFilterInput, $categoryFilter: StringQueryOperatorInput) {
+    strapiCategory(slug: $categoryFilter) {
+      id
+      name
+      mhero {
+        title
+      }
+      whero {
+        title
+      }
+      men_img {
+        url
+      }
+      women_img {
+        url
+      }
+    }
     allStrapiProduct(filter: $filter) {
       edges {
         node {

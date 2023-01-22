@@ -154,6 +154,15 @@
       "menuLink": "/about"
     }
   ],
+  "sort": {
+    "BY_PRICE": "price",
+    "BY_POPULARITY": "popularity",
+    "BY_DATE": "date"
+  },
+  "sortOrder": {
+    "ASC": "asc",
+    "DESC": "desc"
+  },
   "filters": [
     {
       "category": "colour",

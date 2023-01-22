@@ -16,7 +16,6 @@ const ProductCardGrid = (props) => {
 
   const renderCards = () => {
     return data.map((product, index) => {
-      console.log(product)
       return (
         <ProductCard
           key={index}

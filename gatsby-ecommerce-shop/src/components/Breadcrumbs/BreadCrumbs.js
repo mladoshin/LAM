@@ -13,6 +13,8 @@ const Breadcrumbs = ({ crumbs }) => {
     }
   }
 
+  crumbsOutput.unshift({label: 'Home', link: window.location.origin})
+
   return (
     <div data-breadcrumbs className={styles.breadcrumbs}>
       {crumbsOutput &&

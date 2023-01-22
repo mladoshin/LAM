@@ -33,7 +33,7 @@ module.exports = {
             singularName: "company",
           },
           {
-            singularName: "category",
+            singularName: "category"
           },
           {
             singularName: "article",
@@ -42,6 +42,14 @@ module.exports = {
         singleTypes: [
           {
             singularName: "homepage",
+            api: {
+              qs: {
+                populate: "*"
+              }
+            }
+          },
+          {
+            singularName: "policy",
             api: {
               qs: {
                 populate: "*"

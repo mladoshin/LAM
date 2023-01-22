@@ -19,12 +19,14 @@
       "required": true
     },
     "price": {
-      "type": "integer"
+      "type": "integer",
+      "required": true,
+      "default": 0
     },
     "image": {
       "type": "media",
       "multiple": true,
-      "required": false,
+      "required": true,
       "allowedTypes": [
         "images"
       ]
@@ -60,18 +62,17 @@
     "options": {
       "type": "json"
     },
-    "stock": {
-      "type": "integer"
-    },
     "collection_gender": {
       "type": "enumeration",
       "enum": [
         "men",
         "women"
-      ]
+      ],
+      "required": true
     },
     "color": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "original_price": {
       "type": "integer",
@@ -82,17 +83,18 @@
       "repeatable": false,
       "component": "seo.seo"
     },
-    "varieties": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "variety"
+    "materials": {
+      "type": "richtext",
+      "required": false,
+      "default": "Нет информации"
     },
-    "variety": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product.product",
-      "inversedBy": "varieties"
+    "policy": {
+      "type": "richtext"
+    },
+    "stock": {
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }

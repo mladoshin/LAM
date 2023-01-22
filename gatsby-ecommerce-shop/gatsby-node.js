@@ -19,6 +19,28 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const queryResults = await graphql(`
     query {
+      strapiPolicy {
+        return {
+          data {
+            return
+          }
+        }
+        payment {
+          data {
+            payment
+          }
+        }
+        guarantee {
+          data {
+            guarantee
+          }
+        }
+        delivery {
+          data {
+            delivery
+          }
+        }
+      }
       allStrapiProduct {
         edges {
           node {
@@ -31,12 +53,18 @@ exports.createPages = async ({ graphql, actions }) => {
             price
             collection_gender
             original_price
+            materials {
+              data {
+                materials
+              }
+            }
+            policy {
+              data {
+                policy
+              }
+            }
             image {
               url
-            }
-            varieties {
-              slug
-              color
             }
             options {
               sizes
@@ -75,7 +103,8 @@ exports.createPages = async ({ graphql, actions }) => {
     context: {
       // This time the entire product is passed down as context
       crumbs: ['men'],
-      filter: {collection_gender: {eq: 'men'}}
+      filter: { collection_gender: { eq: 'men' } },
+      
     },
   })
   createPage({
@@ -84,7 +113,7 @@ exports.createPages = async ({ graphql, actions }) => {
     context: {
       // This time the entire product is passed down as context
       crumbs: ['women'],
-      filter: {collection_gender: {eq: 'women'}}
+      filter: { collection_gender: { eq: 'women' } }
     },
   })
 
@@ -95,7 +124,8 @@ exports.createPages = async ({ graphql, actions }) => {
       context: {
         // This time the entire product is passed down as context
         crumbs: ['men', node.slug],
-        filter: {collection_gender: {eq: 'men'}, categories: {elemMatch: {slug: {eq: node.slug}}}}
+        filter: { collection_gender: { eq: 'men' }, categories: { elemMatch: { slug: { eq: node.slug } } } },
+        categoryFilter: { eq: node.slug }
       },
     })
     createPage({
@@ -103,7 +133,8 @@ exports.createPages = async ({ graphql, actions }) => {
       component: shopTemplate,
       context: {
         crumbs: ['women', node.slug],
-        filter: {collection_gender: {eq: 'women'}, categories: {elemMatch: {slug: {eq: node.slug}}}}
+        filter: { collection_gender: { eq: 'women' }, categories: { elemMatch: { slug: { eq: node.slug } } } },
+        categoryFilter: { eq: node.slug}
       },
     })
 
@@ -114,7 +145,7 @@ exports.createPages = async ({ graphql, actions }) => {
         // This time the entire product is passed down as context
         crumbs: [node.slug],
         prefix: '/products',
-        filter: {categories: {elemMatch: {slug: {eq: node.slug}}}}
+        filter: { categories: { elemMatch: { slug: { eq: node.slug } } } }
       },
     })
   })
@@ -127,9 +158,10 @@ exports.createPages = async ({ graphql, actions }) => {
       component: productTemplate,
       context: {
         // This time the entire product is passed down as context
-        crumbs: [node.slug, node.title],
+        crumbs: [node.collection_gender, node.categories[0].slug, node.title],
         product: node,
-        filter: {categories: {elemMatch: {slug: {eq: node.categories[0]?.slug || ""}}}, collection_gender: {eq: node.collection_gender}}
+        policy: queryResults.data.strapiPolicy,
+        filter: { categories: { elemMatch: { slug: { eq: node.categories[0]?.slug || "" } } }, collection_gender: { eq: node.collection_gender } }
       },
     })
 
