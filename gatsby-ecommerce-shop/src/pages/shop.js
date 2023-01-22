@@ -50,6 +50,7 @@ const ShopPage = (props) => {
     :
     { ...props.data.strapiCategory.whero, image: props.data.strapiCategory.women_img }
 
+  console.log(products)
   return (
     <Layout>
       <div className={styles.root}>
@@ -85,7 +86,7 @@ const ShopPage = (props) => {
                 <Icon symbol={'caret'} />
                 <SortPanel open={showSort} options={Object.values(Config.sort).map(sk => ({sort: sk, order: Config.sortOrder.DESC}))}/>
               </div> */}
-              <SortDropdown sortState={sortState} setSortState={setSortState} showSort={showSort} setShowSort={setShowSort}/>
+              <SortDropdown sortState={sortState} setSortState={setSortState} showSort={showSort} setShowSort={setShowSort} />
             </div>
           </div>
           <CardController
@@ -141,6 +142,7 @@ export const query = graphql`
           id
           collection_gender
           original_price
+          createdAt
           categories {
             id
             slug
