@@ -40,22 +40,25 @@
       "required": true
     },
     "men_img": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "videos"
-      ],
-      "type": "media",
-      "multiple": false,
-      "required": true
+      ]
     },
     "women_img": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "videos"
-      ],
-      "type": "media",
-      "multiple": false,
-      "required": true
+      ]
+    },
+    "filters": {
+      "type": "json"
     }
   }
 }

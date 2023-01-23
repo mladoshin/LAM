@@ -6,6 +6,7 @@ import * as styles from './CardController.module.css';
 import Button from '../Button';
 import Drawer from '../Drawer';
 import Icon from '../Icons/Icon';
+import capitilize from '../../helpers/capitilize';
 
 const CardController = (props) => {
   const { state: filterState, visible, closeFilter, filterTick, resetFilter } = props;
@@ -38,7 +39,7 @@ const CardController = (props) => {
                             action={(e) =>
                               filterTick(e, categoryIndex, itemIndex)
                             }
-                            label={item.name}
+                            label={capitilize(item.name)}
                             value={item.value}
                             id={item.name}
                             name={item.name}

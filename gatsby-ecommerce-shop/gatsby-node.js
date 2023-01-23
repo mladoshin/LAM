@@ -1,5 +1,5 @@
 const path = require("path");
-const { categories } = require("../datastore/data/data");
+const { generateFilterOptions } = require("./src/helpers/generateFilterOptions");
 
 exports.onCreateWebpackConfig = (helper) => {
   const { stage, actions, getConfig } = helper;
@@ -88,6 +88,20 @@ exports.createPages = async ({ graphql, actions }) => {
           node {
             id
             slug
+            filters {
+              strapi_json_value
+            }
+            products {
+              id
+              color
+              options {
+                sizes
+              }
+              collection_gender
+              company {
+                name
+              }
+            }
           }
         }
       }
@@ -104,7 +118,7 @@ exports.createPages = async ({ graphql, actions }) => {
       // This time the entire product is passed down as context
       crumbs: ['men'],
       filter: { collection_gender: { eq: 'men' } },
-      
+
     },
   })
   createPage({
@@ -117,7 +131,14 @@ exports.createPages = async ({ graphql, actions }) => {
     },
   })
 
+  //generate category filters 
+
   queryResults.data.allStrapiCategory.edges.forEach(({ node }) => {
+
+    const productFilters = generateFilterOptions(node)
+    const productFilters_men = generateFilterOptions(node, 'men')
+    const productFilters_women = generateFilterOptions(node, 'women')
+
     createPage({
       path: `/shop/men/${node.slug}`,
       component: shopTemplate,
@@ -125,7 +146,8 @@ exports.createPages = async ({ graphql, actions }) => {
         // This time the entire product is passed down as context
         crumbs: ['men', node.slug],
         filter: { collection_gender: { eq: 'men' }, categories: { elemMatch: { slug: { eq: node.slug } } } },
-        categoryFilter: { eq: node.slug }
+        categoryFilter: { eq: node.slug },
+        productFilters: productFilters_men
       },
     })
     createPage({
@@ -134,7 +156,8 @@ exports.createPages = async ({ graphql, actions }) => {
       context: {
         crumbs: ['women', node.slug],
         filter: { collection_gender: { eq: 'women' }, categories: { elemMatch: { slug: { eq: node.slug } } } },
-        categoryFilter: { eq: node.slug}
+        categoryFilter: { eq: node.slug },
+        productFilters: productFilters_women
       },
     })
 
@@ -145,7 +168,8 @@ exports.createPages = async ({ graphql, actions }) => {
         // This time the entire product is passed down as context
         crumbs: [node.slug],
         prefix: '/products',
-        filter: { categories: { elemMatch: { slug: { eq: node.slug } } } }
+        filter: { categories: { elemMatch: { slug: { eq: node.slug } } } },
+        productFilters: productFilters
       },
     })
   })
@@ -168,3 +192,57 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 }
 
+// function generateFilterOptions(node, gender = null) {
+//   const { filters: filters_json, products } = node
+//   const colorSet = new Set()
+//   const brandSet = new Set()
+//   const extraSets = []
+
+//   const filters = filters_json?.strapi_json_value || []
+
+//   products.filter(p => !gender || p.collection_gender === gender).forEach(p => {
+//     colorSet.add(p.color.split('-')[0])
+//   });
+
+//   products.filter(p => !gender || p.collection_gender === gender).forEach(p => {
+//     brandSet.add(p.company.name)
+//   });
+
+//   filters.forEach(f => {
+//     const fset = new Set()
+//     let key = ""
+
+//     if (f == "size") {
+//       key = "sizes"
+//     }
+
+//     if (key === "") return;
+
+//     products.filter(p => !gender || p.collection_gender === gender).forEach(p => {
+//       if (!p?.options?.sizes?.length) return;
+
+//       p.options?.sizes?.forEach(s => fset.add(s))
+//     });
+//     extraSets.push({
+//       category: f,
+//       items: Array.from(fset).map(el => ({ name: el, value: true }))
+//     })
+//   })
+
+//   console.log(extraSets)
+
+
+//   const allFilters = [
+//     {
+//       category: "color",
+//       items: Array.from(colorSet).map(c => ({ name: c, value: true }))
+//     },
+//     {
+//       category: "brand",
+//       items: Array.from(brandSet).map(b => ({ name: b, value: true }))
+//     },
+//     ...extraSets
+//   ]
+
+//   return allFilters
+// }

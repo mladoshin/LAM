@@ -16,7 +16,6 @@ function SortDropdown({ sortState, setSortState, showSort, setShowSort }) {
             if (path.indexOf(el) === -1) {
                 // close
                 setShowSort(false)
-                console.log(path)
             } else {
                 setShowSort(true)
             }
@@ -28,7 +27,6 @@ function SortDropdown({ sortState, setSortState, showSort, setShowSort }) {
     function toggleOrder() {
         const state = { ...sortState }
         state.order = state.order === Config.sortOrder.DESC ? Config.sortOrder.ASC : Config.sortOrder.DESC
-        console.log(state)
         setSortState(state)
     }
 
@@ -37,7 +35,6 @@ function SortDropdown({ sortState, setSortState, showSort, setShowSort }) {
         setSortState(state)
     }
 
-    console.log(sortState)
 
     return (
         <>

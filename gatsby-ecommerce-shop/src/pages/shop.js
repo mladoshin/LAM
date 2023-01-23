@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import * as styles from './shop.module.css';
 
 import Banner from '../components/Banner';
@@ -17,15 +17,42 @@ import { graphql } from 'gatsby';
 import capitilize from '../helpers/capitilize';
 import useFilter from '../hooks/useFilter';
 import SortDropdown from '../components/SortDropdown';
+import { generateFilterOptions } from '../helpers/generateFilterOptions';
 
+//generate unique set of categories in filters
+function generateProductCategories(products){
+  const categorySet = new Set()
+
+  products?.map(p => {
+    p.categories?.forEach(cat => categorySet.add(cat.name))
+  })
+
+  return {
+    category: 'category',
+    items: Array.from(categorySet).map(cat => ({name: cat, value: true}))
+  }
+}
 
 const ShopPage = (props) => {
+  const collection_gender = props.pageContext.filter?.collection_gender?.eq || null
   const products = props.data.allStrapiProduct.edges.map(n => ({ ...n.node }))
+
+  //generate product filters for a page
+  const productFilters = useMemo(() => {
+    let res = null
+    if (!props.pageContext.productFilters) {
+      res = generateFilterOptions({ products })
+      const category_filter = generateProductCategories(products)
+      res.push(category_filter)
+      console.log(res)
+    }
+    return res
+  }, [])
+
 
   const [showFilter, setShowFilter] = useState(false);
   const [showSort, setShowSort] = useState(false);
-  // const [filteredProducts, setFilteredProducts] = useState(products)
-  const { filteredProducts, filterState, filterTick, resetFilter, sortState, setSortState } = useFilter({ products })
+  const { filteredProducts, filterState, filterTick, resetFilter, sortState, setSortState } = useFilter({ products, productFilters: props.pageContext.productFilters || productFilters })
 
   useEffect(() => {
     window.addEventListener('keydown', escapeHandler);
@@ -44,20 +71,24 @@ const ShopPage = (props) => {
     return { label: capitilize(el), link: `${props.location.origin}/${prefix}/${link}` }
   })
 
-  const collection_gender = props.pageContext.filter.collection_gender.eq
-  const banner = collection_gender === 'men' ?
-    { ...props.data.strapiCategory.mhero, image: props.data.strapiCategory.men_img }
-    :
-    { ...props.data.strapiCategory.whero, image: props.data.strapiCategory.women_img }
 
-  console.log(products)
+
+  let banner = {}
+  if (collection_gender === 'men') {
+    banner = { ...props.data.strapiCategory.mhero, image: props.data.strapiCategory.men_img }
+  } else if (collection_gender === 'women') {
+    banner = { ...props.data.strapiCategory.whero, image: props.data.strapiCategory.women_img }
+  }
+
+
+
   return (
     <Layout>
       <div className={styles.root}>
         <Container size={'large'} spacing={'min'}>
           <div className={styles.breadcrumbContainer}>
             <Breadcrumbs
-              crumbs={crumbs}
+              crumbs={crumbs || []}
             />
           </div>
         </Container>
@@ -77,15 +108,6 @@ const ShopPage = (props) => {
                 <Icon symbol={'filter'} />
                 <span>Filters</span>
               </div>
-              {/* <div
-                className={`${styles.iconContainer} ${styles.sortContainer}`}
-                onClick={() => setShowSort(s => !s)}
-                style={{position: 'relative'}}
-              >
-                <span>Sort by</span>
-                <Icon symbol={'caret'} />
-                <SortPanel open={showSort} options={Object.values(Config.sort).map(sk => ({sort: sk, order: Config.sortOrder.DESC}))}/>
-              </div> */}
               <SortDropdown sortState={sortState} setSortState={setSortState} showSort={showSort} setShowSort={setShowSort} />
             </div>
           </div>
@@ -143,9 +165,14 @@ export const query = graphql`
           collection_gender
           original_price
           createdAt
+          color
           categories {
             id
             slug
+            name
+          }
+          company {
+            name
           }
           slug
           price
