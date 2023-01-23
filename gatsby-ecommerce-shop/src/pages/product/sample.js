@@ -33,8 +33,8 @@ const ProductPage = (props) => {
   const product = props.pageContext.product
   const policy = props.pageContext.policy
 
-  const [activeSwatch, setActiveSwatch] = useState(product.color);
-  const [activeSize, setActiveSize] = useState(Array.isArray(product.options?.sizes) ? product.options?.sizes[0] : "");
+  const [activeSwatch, setActiveSwatch] = useState(product?.color);
+  const [activeSize, setActiveSize] = useState(Array.isArray(product?.options?.sizes) ? product?.options?.sizes[0] : "");
   // const suggestions = generateMockProductData(4, 'woman');
 
   // console.log(props)

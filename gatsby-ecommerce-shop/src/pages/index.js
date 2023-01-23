@@ -28,6 +28,15 @@ const IndexPage = () => {
   const data = useStaticQuery(graphql`
     query {
       strapiHomepage {
+        promotions {
+          content
+          cta
+          link
+          image {
+            id
+            url
+          }
+        }
         primaryhero {
           image {
             url
@@ -73,16 +82,20 @@ const IndexPage = () => {
     }
   `)
 
+  const promotions = data.strapiHomepage.promotions || []
 
+  console.log(data)
   return (
     <Layout disablePaddingBottom>
       {/* Hero Container */}
       <Hero
-        maxWidth={'500px'}
+        maxWidth={'750px'}
+        maxHeight={'300px'}
         image={`${config.STRAPI_API_URL}${data.strapiHomepage.primaryhero.image[0].url}`}
         title={data.strapiHomepage.primaryhero.title}
-        subtitle={'Discover Autumn Winter 2021'}
-        ctaText={'shop now'}
+        header="LAM Leather"
+        subtitle={data.strapiHomepage.primaryhero.title}
+        ctaText={'Смотреть все'}
         ctaAction={goToShop}
       />
 
@@ -101,7 +114,7 @@ const IndexPage = () => {
       {/* Collection Container */}
       <div className={styles.collectionContainer}>
         <Container size={'large'}>
-          <Title name={'New Collection'} />
+          <Title name={'Коллекции'} />
           <ProductCollectionGrid />
         </Container>
       </div>
@@ -109,7 +122,7 @@ const IndexPage = () => {
       {/* New Arrivals */}
       <div className={styles.newArrivalsContainer}>
         <Container>
-          <Title name={'Новинки'} link={'/shop'} textLink={'view all'} />
+          <Title name={'Новинки'} link={'/shop'} textLink={'смотреть все'} />
           <ProductCardGrid
             spacing={true}
             showSlider
@@ -124,12 +137,12 @@ const IndexPage = () => {
       <div className={styles.highlightContainer}>
         <Container size={'large'} fullMobile>
           <Highlight
-            image={'/highlight.png'}
+            image={`${config.STRAPI_API_URL}/uploads/photo_2023_01_16_21_29_19_ddea8967c5.jpg`}
             altImage={'highlight image'}
-            miniImage={'/highlightmin.png'}
+            miniImage={`${config.STRAPI_API_URL}/uploads/photo_2023_01_18_15_04_24_ba3e7ff62c.jpg`}
             miniImageAlt={'mini highlight image'}
-            title={'Luxury Knitwear'}
-            description={`This soft lambswool jumper is knitted in Scotland, using yarn from one of the world's oldest spinners based in Fife`}
+            title={'Премиальное качество'}
+            description={`Каждый наш аксессуар сделан вручную из лучшей натуральной кожи, устойчивой к износу и не требующей особого ухода. Мы заботися о том, чтобы наш продукт давал вам лучшие тактильные ощущения вместе с непревзойденной эстетичностью. `}
             textLink={'shop now'}
             link={'/shop'}
           />
@@ -138,11 +151,16 @@ const IndexPage = () => {
 
       {/* Promotion */}
       <div className={styles.promotionContainer}>
-        <Hero image={'/banner2.png'} title={`-50% off \n All Essentials`} />
-        <div className={styles.linkContainers}>
+        <Hero
+          image={`${config.STRAPI_API_URL}${promotions[0].image[0].url}`}
+          header={promotions[0].content}
+          ctaText={promotions[0].cta}
+          style={{ height: "500px", minHeight: 0 }}
+        />
+        {/* <div className={styles.linkContainers}>
           <Link to={'/shop'}>WOMAN</Link>
           <Link to={'/shop'}>MAN</Link>
-        </div>
+        </div> */}
       </div>
 
       {/* Quote */}

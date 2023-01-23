@@ -12,8 +12,11 @@ const Breadcrumbs = ({ crumbs }) => {
       crumbsOutput = [crumbsOutput];
     }
   }
+  const isBrowser = typeof window !== "undefined"
+  if (isBrowser) {
+    crumbsOutput.unshift({ label: 'Home', link: window.location.origin })
+  }
 
-  crumbsOutput.unshift({label: 'Home', link: window.location.origin})
 
   return (
     <div data-breadcrumbs className={styles.breadcrumbs}>

@@ -56,6 +56,16 @@
       "type": "component",
       "repeatable": false,
       "component": "recentarticles.recentarticles"
+    },
+    "promotions": {
+      "type": "component",
+      "repeatable": true,
+      "component": "promotions.primarypromotion"
+    },
+    "extrahero": {
+      "type": "component",
+      "repeatable": false,
+      "component": "hero.mainhero"
     }
   }
 }

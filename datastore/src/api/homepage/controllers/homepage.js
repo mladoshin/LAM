@@ -64,6 +64,11 @@ module.exports = createCoreController('api::homepage.homepage', ({ strapi }) => 
                         women: true
                     }
                 },
+                promotions: {
+                    populate: {
+                        image: true
+                    }
+                }
             },
         });
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
