@@ -33,6 +33,11 @@ function generateProductCategories(products){
   }
 }
 
+const gender_options = {
+  category: 'gender',
+  items: ['men', 'women'].map(el => ({name: el, value: true}))
+}
+
 const ShopPage = (props) => {
   const collection_gender = props.pageContext.filter?.collection_gender?.eq || null
   const products = props.data.allStrapiProduct.edges.map(n => ({ ...n.node }))
@@ -44,8 +49,9 @@ const ShopPage = (props) => {
       res = generateFilterOptions({ products })
       const category_filter = generateProductCategories(products)
       res.push(category_filter)
-      console.log(res)
+      if (!collection_gender) res.push(gender_options);
     }
+
     return res
   }, [])
 
@@ -80,7 +86,13 @@ const ShopPage = (props) => {
     banner = { ...props.data.strapiCategory.whero, image: props.data.strapiCategory.women_img }
   }
 
-
+  const size_chips = useMemo(()=>{
+    const idx = filterState.findIndex(f => f.category == 'size')
+    if (idx == -1) return [];
+    if(filterState[idx].items.every(i => i.value)) return [{name: 'All'}];
+    
+    return filterState[idx].items.filter(i => i.value)
+  }, [filterState])
 
   return (
     <Layout>
@@ -98,7 +110,7 @@ const ShopPage = (props) => {
         />
         <Container size={'large'} spacing={'min'}>
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>476 items</span>
+            <span className={styles.itemCount}>{filteredProducts.length} items</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -118,12 +130,13 @@ const ShopPage = (props) => {
             filterTick={filterTick}
             resetFilter={resetFilter}
           />
-          <div className={styles.chipsContainer}>
-            <Chip name={'XS'} />
-            <Chip name={'S'} />
+          <div className={styles.chipsContainer}>      
+            {size_chips.map(chip => (
+              <Chip name={chip.name} />
+            ))}
           </div>
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>476 items</span>
+            <span className={styles.mobileItemCount}>{filteredProducts.length} items</span>
             <ProductCardGrid data={filteredProducts}></ProductCardGrid>
           </div>
           <div className={styles.loadMoreContainer}>
@@ -166,6 +179,9 @@ export const query = graphql`
           original_price
           createdAt
           color
+          options {
+            sizes
+          }
           categories {
             id
             slug

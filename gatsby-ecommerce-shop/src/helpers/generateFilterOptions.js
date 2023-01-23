@@ -31,7 +31,7 @@ function generateFilterOptions(node, gender = null) {
         });
         extraSets.push({
             category: f,
-            items: Array.from(fset).map(el => ({ name: el, value: true }))
+            items: Array.from(fset).sort((a, b) => sortOptions(a, b, f)).map(el => ({ name: el, value: true }))
         })
     })
 
@@ -41,16 +41,24 @@ function generateFilterOptions(node, gender = null) {
     const allFilters = [
         {
             category: "color",
-            items: Array.from(colorSet).map(c => ({ name: c, value: true }))
+            items: Array.from(colorSet).sort((a, b) => sortOptions(a, b)).map(c => ({ name: c, value: true }))
         },
         {
             category: "brand",
-            items: Array.from(brandSet).map(b => ({ name: b, value: true }))
+            items: Array.from(brandSet).sort((a, b) => sortOptions(a, b)).map(b => ({ name: b, value: true }))
         },
         ...extraSets
     ]
 
     return allFilters
+}
+
+function sortOptions(a, b, category='') {
+    if (category == 'size') {
+        return +a > +b ? 1 : -1
+    }
+
+    return a > b ? 1 : -1
 }
 
 module.exports = { generateFilterOptions }

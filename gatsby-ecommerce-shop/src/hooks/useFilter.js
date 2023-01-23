@@ -61,6 +61,21 @@ function useFilter({ products, filter, productFilters }) {
                     ok = false
                     return
                 }
+            }else if (key == 'gender'){
+                if(options.indexOf(el.collection_gender) == -1){
+                    ok = false
+                    return
+                }
+            }else if (key == 'size'){
+                ok = options.some(opt => {
+                    if (!el?.options?.sizes) return;
+                    
+                    return el.options?.sizes?.indexOf(opt) !== -1
+                })
+                // if(options.indexOf(el.collection_gender) == -1){
+                //     ok = false
+                //     return
+                // }
             }
         })
 
