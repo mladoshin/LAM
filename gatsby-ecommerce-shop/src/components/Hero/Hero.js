@@ -2,6 +2,7 @@ import React from 'react';
 import * as styles from './Hero.module.css';
 import Button from '../Button';
 import { Link } from 'gatsby';
+import classnames from "classnames"
 
 const Hero = (props) => {
   const {
@@ -15,13 +16,15 @@ const Hero = (props) => {
     ctaLink,
     ctaTo,
     header,
-    style
+    style,
+    children
   } = props;
   return (
     <div className={styles.root} style={{ backgroundImage: `url(${image})`, ...style }}>
       <div className={styles.content} style={{ maxWidth: maxWidth }}>
-        {header && <h2 className={styles.title}>{header}</h2>}
+        {header && <h2 className={classnames(styles.title, styles.gold)}>{header}</h2>}
         {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
+        {children}
         {ctaText && (
           <Button
             className={`${styles.ctaButton} ${ctaStyle}`}

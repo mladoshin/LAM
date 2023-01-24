@@ -82,3 +82,9 @@
         padding: 0px 32px;
     }
 }
+
+.gold {
+    /* color: var(--standard-gold); */
+    color: var(--standard-black);
+    font-weight: 700;
+}

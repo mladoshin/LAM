@@ -16,13 +16,15 @@
     justify-content: center;
     text-align: center;
 
-    max-width: 400px;
+    max-width: 600px;
     margin: 0 auto;
+    min-width: 400px;
 }
 
 .miniImage {
-    height: 300px;
-    width: 250px;
+    height: 400px;
+    /* width: 250px; */
+    object-fit: cover;
 }
 
 .contentContainer h3 {
@@ -30,12 +32,13 @@
     font-size: 42px;
     line-height: 50px;
     font-weight: normal;
+    color: var(--standard-gold);
 }
 
 .contentContainer p {
     font-weight: normal;
-    font-size: 16px;
-    line-height: 19px;
+    font-size: 18px;
+    line-height: 25px;
 }
 
 .contentContainer a {

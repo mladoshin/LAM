@@ -80,11 +80,11 @@ const IndexPage = () => {
         }
       }
     }
-  `)
+  `);
 
-  const promotions = data.strapiHomepage.promotions || []
+  const promotions = data.strapiHomepage.promotions || [];
 
-  console.log(data)
+  console.log(data);
   return (
     <Layout disablePaddingBottom>
       {/* Hero Container */}
@@ -92,23 +92,26 @@ const IndexPage = () => {
         maxWidth={'750px'}
         maxHeight={'300px'}
         image={`${config.STRAPI_API_URL}${data.strapiHomepage.primaryhero.image[0].url}`}
-        title={data.strapiHomepage.primaryhero.title}
+        // title={data.strapiHomepage.primaryhero.title}
         header="LAM Leather"
-        subtitle={data.strapiHomepage.primaryhero.title}
-        ctaText={'Смотреть все'}
+        // subtitle={data.strapiHomepage.primaryhero.title}
+        ctaText={'К покупкам'}
         ctaAction={goToShop}
-      />
+      >
+        <h1 className={styles.description}>Магазин с самыми качественными премиальными кожаными аксессуарами.</h1>
+        </Hero>
 
       {/* Message Container */}
       <div className={styles.messageContainer}>
         <p>
-          This is a demonstration of the Sydney theme for verse by{' '}
-          <span className={styles.gold}>matter design.</span>
+          <span className={styles.gold} style={{fontWeight: 700}}>LAM Leather</span> - магазин лучших
+          кожаных премиальных аксессуаров.
         </p>
         <p>
-          wear by <span className={styles.gold}>sunspel</span> and{' '}
-          <span className={styles.gold}>scotch&soda</span>
+          Наши изделия сделаны вручную из натуральной кожи, которая намного
+          прочнее и эластичнее, чем более дешевые аналоги.
         </p>
+        <p>Это делает аксессуары более долговечными и качественными.</p>
       </div>
 
       {/* Collection Container */}
@@ -143,7 +146,7 @@ const IndexPage = () => {
             miniImageAlt={'mini highlight image'}
             title={'Премиальное качество'}
             description={`Каждый наш аксессуар сделан вручную из лучшей натуральной кожи, устойчивой к износу и не требующей особого ухода. Мы заботися о том, чтобы наш продукт давал вам лучшие тактильные ощущения вместе с непревзойденной эстетичностью. `}
-            textLink={'shop now'}
+            textLink={'Купить'}
             link={'/shop'}
           />
         </Container>
@@ -155,7 +158,7 @@ const IndexPage = () => {
           image={`${config.STRAPI_API_URL}${promotions[0].image[0].url}`}
           header={promotions[0].content}
           ctaText={promotions[0].cta}
-          style={{ height: "500px", minHeight: 0 }}
+          style={{ height: '500px', minHeight: 0 }}
         />
         {/* <div className={styles.linkContainers}>
           <Link to={'/shop'}>WOMAN</Link>
@@ -164,13 +167,13 @@ const IndexPage = () => {
       </div>
 
       {/* Quote */}
-      <Quote
+      {/* <Quote
         bgColor={'var(--standard-light-grey)'}
         title={'about Sydney'}
         quote={
           '“We believe in two things: the pursuit of quality in everything we do, and looking after one another. Everything else should take care of itself.”'
         }
-      />
+      /> */}
 
       {/* Blog Grid */}
       <div className={styles.blogsContainer}>
@@ -185,20 +188,23 @@ const IndexPage = () => {
         <Hero
           image={`${config.STRAPI_API_URL}${data.strapiHomepage.secondaryhero.image[0].url}`}
           title={data.strapiHomepage.secondaryhero.title}
-          subtitle={
-            'From caring for our land to supporting our people, discover the steps we’re taking to do more for the world around us.'
-          }
-          ctaText={'read more'}
+          // subtitle="Делись с друзьями своим промокодом и получи скидку 1000 рублей с каждой покупки друга!"
+          ctaText={'Подробнее'}
           maxWidth={'660px'}
           ctaStyle={styles.ctaCustomButton}
-        />
+        >
+          <h2 className={styles.promo_title}>Ограниченная акция!</h2>
+          <p className={styles.promo_subtitle}>Делись с друзьями своим промокодом и получи скидку 1000 рублей с каждой покупки друга!</p>
+        </Hero>
       </div>
 
       {/* Social Media */}
       <div className={styles.socialContainer}>
         <Title
-          name={'Styled by You'}
-          subtitle={'Tag @sydney to be featured.'}
+          name={'Наши покупатели'}
+          subtitle={
+            'Оставьте хэштэг #lam_leather в соцсетях, и попадите в нашу подборку на сайте!'
+          }
         />
         <div className={styles.socialContentGrid}>
           <img src={`/social/socialMedia1.png`} alt={'social media 1'} />

@@ -61,7 +61,7 @@ const BlogPage = (props) => {
         {/* Blog Grid */}
         <div className={styles.blogsContainer}>
           <Container size={'large'}>
-            <BlogPreviewGrid data={blogData} hideReadMoreOnWeb showExcerpt />
+            <BlogPreviewGrid data={[]} hideReadMoreOnWeb showExcerpt />
           </Container>
         </div>
       </div>

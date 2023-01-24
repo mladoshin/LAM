@@ -102,8 +102,8 @@
 
 .contentBottom {
     margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    /* display: grid;
+    grid-template-columns: repeat(2, 1fr); */
 }
 
 .settings {
@@ -148,8 +148,9 @@
 
 .copyrightContainer {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     flex-direction: column;
+    justify-content: center;
 }
 
 .copyrightContainer span{

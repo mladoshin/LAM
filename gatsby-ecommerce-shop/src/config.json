@@ -48,40 +48,36 @@
   },
   "footerLinks": [
     {
-      "subTitle": "Info",
+      "subTitle": "Информация",
       "links": [
         {
-          "text": "About Us",
+          "text": "О нас",
           "link": "/about"
         },
         {
-          "text": "Journal",
+          "text": "Блог",
           "link": "/blog"
         },
         {
-          "text": "Privacy Policy",
+          "text": "Политика конфиденциальности",
           "link": "/support#policy"
         }
       ]
     },
     {
-      "subTitle": "Support",
+      "subTitle": "Поддержка",
       "links": [
         {
-          "text": "FAQ",
+          "text": "Часто задаваемые вопросы",
           "link": "/faq"
         },
         {
-          "text": "Contact Us",
+          "text": "Связаться с нами",
           "link": "/support#contact"
         },
         {
-          "text": "Shipping & Returns",
-          "link": "/support#returns"
-        },
-        {
-          "text": "How to use this theme",
-          "link": "/how-to-use"
+          "text": "Доставка и возвраты",
+          "link": "/support#shipping"
         }
       ]
     }
@@ -146,7 +142,7 @@
     },
     {
       "menuLabel": "Доставка",
-      "menuLink": "/delivery",
+      "menuLink": "/support#shipping",
       "category": null
     },
     {

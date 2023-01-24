@@ -4,7 +4,7 @@ import config from "../../config.json"
 
 const Banner = (props) => {
   const {
-    banner,
+    banner={},
     maxWidth,
     name,
     subtitle,
@@ -17,7 +17,7 @@ const Banner = (props) => {
 
   const customStyling = {
     backgroundColor: bgColor,
-    backgroundImage: banner.image?.url !== undefined ? `url(${config.STRAPI_API_URL}${banner.image.url})` : 'none',
+    backgroundImage: banner.image?.url !== undefined ? `url(${config.STRAPI_API_URL}${banner?.image?.url})` : 'none',
     height: height,
     color: color,
   };
