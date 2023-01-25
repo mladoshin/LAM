@@ -30,21 +30,24 @@ const ProductPage = (props) => {
   const sampleProduct = generateMockProductData(1, 'sample')[0];
   const [qty, setQty] = useState(0);
   const [isWishlist, setIsWishlist] = useState(false);
-  const product = props.pageContext.product
-  const policy = props.pageContext.policy
+  const product = props.pageContext.product || {}
+  const policy = props.pageContext.policy || {}
 
   const [activeSwatch, setActiveSwatch] = useState(product?.color);
   const [activeSize, setActiveSize] = useState(Array.isArray(product?.options?.sizes) ? product?.options?.sizes[0] : "");
   // const suggestions = generateMockProductData(4, 'woman');
 
   // console.log(props)
-  const suggestions = props.data.allStrapiProduct.edges?.map(edge => ({ ...edge.node }))?.filter(edge => edge.slug !== product.slug)
+  const suggestions = props.data.allStrapiProduct.edges?.map(edge => ({ ...edge.node }))?.filter(edge => edge.slug !== product?.slug)
 
-  const baseSlug = product.slug.replace(product.color, "")
+  const baseSlug = product?.slug?.replace(product.color, "")
 
   let link = ""
   const crumbs = props.pageContext.crumbs?.map((el, idx) => {
     link += (el+'/')
+    if (typeof window == "undefined"){
+      return {label: capitilize(el), link: '#'}
+    }
 
     return {label: capitilize(el), link: idx===props.pageContext.crumbs.length-1 ? window.location.href: `${window.location.origin}/shop/${link}`}
   })
@@ -60,7 +63,7 @@ const ProductPage = (props) => {
           />
           <div className={styles.content}>
             <div className={styles.gallery}>
-              <Gallery images={product.image.map(img => ({ alt: 'img', image: `${config.STRAPI_API_URL}${img.url}` }))} />
+              <Gallery images={product.image?.map(img => ({ alt: 'img', image: `${config.STRAPI_API_URL}${img.url}` }))} />
             </div>
             <div className={styles.details}>
               <h1>{product.title}</h1>

@@ -1,0 +1,43 @@
+.root-policy {
+  ul {
+    list-style: disc;
+    padding-left: 20px;
+    li {
+      list-style-type: disc;
+      &::marker {
+        color: #000;
+      }
+    }
+  }
+
+  h4 {
+    font-weight: normal;
+    font-size: 26px;
+    line-height: 30px;
+    margin-top: 2rem;
+    font-family: 'Inria Serif', serif;
+  }
+}
+
+.root-delivery {
+  h4 {
+    font-weight: normal;
+    font-size: 26px;
+    line-height: 30px;
+    margin-top: 2rem;
+    font-family: 'Inria Serif', serif;
+  }
+}
+
+.root-payment {
+  ul {
+    list-style: disc;
+    padding-left: 20px;
+    li {
+      list-style-type: disc;
+      &::marker {
+        color: #000;
+      }
+    }
+  }
+}

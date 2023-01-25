@@ -6,17 +6,21 @@ import Banner from '../components/Banner';
 import Contact from '../components/Contact';
 import Layout from '../components/Layout/Layout';
 import ThemeLink from '../components/ThemeLink';
-import Policy from '../components/Policy';
+import PrivacyPolicy from '../components/Policy';
 import Container from '../components/Container';
+import DeliveryPolicy from '../components/Policy/DeliveryPolicy';
+import ReturnPolicy from '../components/Policy/ReturnPolicy';
+import PaymentPolicy from '../components/Policy/PaymentPolicy';
+import Terms from '../components/Policy/Terms';
 
 const SupportPage = (props) => {
   const subpages = [
-    { title: 'Shipping', key: 'shipping' },
-    { title: 'Returns', key: 'returns' },
-    { title: 'Payments & Security', key: 'payments' },
-    { title: 'Terms & Conditions', key: 'terms' },
-    { title: 'Contact Us', key: 'contact' },
-    { title: 'Privacy Policy', key: 'policy' },
+    { title: 'Доставка', key: 'shipping' },
+    { title: 'Возврат', key: 'returns' },
+    { title: 'Оплата и конфиденциальность', key: 'payments' },
+    { title: 'Условия и положения', key: 'terms' },
+    { title: 'Связаться с нами', key: 'contact' },
+    { title: 'Политика конфиденциальности', key: 'policy' },
   ];
 
   const [current, setCurrent] = useState(subpages[4]);
@@ -29,19 +33,19 @@ const SupportPage = (props) => {
         tempElement = <Contact />;
         break;
       case 'policy':
-        tempElement = <Policy />;
+        tempElement = <PrivacyPolicy />;
         break;
       case 'shipping':
-        tempElement = <Policy />;
+        tempElement = <DeliveryPolicy />;
         break;
       case 'returns':
-        tempElement = <Policy />;
+        tempElement = <ReturnPolicy />;
         break;
       case 'payments':
-        tempElement = <Policy />;
+        tempElement = <PaymentPolicy />;
         break;
       case 'terms':
-        tempElement = <Policy />;
+        tempElement = <Terms />;
         break;
       default:
         break;

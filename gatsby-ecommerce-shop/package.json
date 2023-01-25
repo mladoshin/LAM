@@ -27,6 +27,7 @@
     "gatsby-plugin-image": "^3.4.0",
     "gatsby-plugin-manifest": "^4.14.0",
     "gatsby-plugin-netlify-cms": "^7.4.0",
+    "gatsby-plugin-sass": "^6.5.0",
     "gatsby-plugin-sharp": "^5.4.0",
     "gatsby-source-filesystem": "^5.4.0",
     "gatsby-source-strapi": "^3.0.4",
@@ -37,7 +38,8 @@
     "react-dom": "^18.0.0",
     "react-helmet": "^6.1.0",
     "react-netlify-identity-widget": "^0.2.7",
-    "react-slick": "^0.29.0"
+    "react-slick": "^0.29.0",
+    "sass": "^1.57.1"
   },
   "devDependencies": {
     "gatsby-plugin-netlify": "^5.0.0",
