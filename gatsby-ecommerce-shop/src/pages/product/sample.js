@@ -23,12 +23,14 @@ import config from '../../config.json'
 import PriceFormatter from '../../components/PriceFormatter';
 import capitilize from '../../helpers/capitilize';
 import StockInfo from '../../components/StockInfo';
+import useCart from '../../hooks/useCart';
 
 const ProductPage = (props) => {
+  const { cart, addProduct} = useCart()
+  
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
-  const sampleProduct = generateMockProductData(1, 'sample')[0];
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
   const [isWishlist, setIsWishlist] = useState(false);
   const product = props.pageContext.product || {}
   const policy = props.pageContext.policy || {}
@@ -53,6 +55,25 @@ const ProductPage = (props) => {
   })
 
   console.log(product)
+
+  function handleAddProduct(){
+    if (!product.stock) return;
+
+    const pr = {
+      strapi_id: product.strapi_id,
+      image: product.image[0].url,
+      title: product.title,
+      slug: product.slug,
+      options: {
+        color: product.color,
+        size: activeSize
+      },
+      price: product.price,
+      quantity: qty
+    }
+
+    addProduct(pr)
+  }
 
   return (
     <Layout>
@@ -102,7 +123,10 @@ const ProductPage = (props) => {
               <div className={styles.actionContainer}>
                 <div className={styles.addToButtonContainer}>
                   <Button
-                    onClick={() => showNotification()}
+                    onClick={() => {
+                      showNotification()
+                      handleAddProduct()
+                    }}
                     fullWidth
                     level={'primary'}
                   >

@@ -15,9 +15,12 @@ const FaqPage = (props) => {
           bgImage={'/faqCover.png'}
           color={'var(--standard-white)'}
           height={'350px'}
+          banner={{title: "Часто задаваемые вопросы"}}
+          className="banner"
         />
         <Container>
-          <div className={styles.section}>
+          <p>In progress...</p>
+          {/* <div className={styles.section}>
             <span>Your Orders</span>
             <div className={styles.subSection}>
               <h3>Deliveries</h3>
@@ -109,7 +112,7 @@ const FaqPage = (props) => {
                 inconvenience to you.
               </p>
             </div>
-          </div>
+          </div> */}
         </Container>
       </div>
     </Layout>

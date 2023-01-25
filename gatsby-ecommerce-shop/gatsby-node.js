@@ -56,6 +56,7 @@ exports.createPages = async ({ graphql, actions }) => {
             status
             color
             price
+            strapi_id
             collection_gender
             original_price
             materials {

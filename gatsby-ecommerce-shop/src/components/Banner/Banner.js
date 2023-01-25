@@ -1,6 +1,7 @@
 import React from 'react';
 import * as styles from './Banner.module.css';
 import config from "../../config.json"
+import classNames from 'classnames';
 
 const Banner = (props) => {
   const {
@@ -13,6 +14,7 @@ const Banner = (props) => {
     height,
     bgColor = 'var(--standard-light-grey)',
     hideSubtitleOnMobile = true,
+    className=""
   } = props;
 
   const customStyling = {
@@ -23,7 +25,7 @@ const Banner = (props) => {
   };
 
   return (
-    <div className={styles.root} style={customStyling}>
+    <div className={classNames(styles.root, className)} style={customStyling}>
       <div className={styles.content} style={{ maxWidth: maxWidth }}>
         <h2>{banner?.title}</h2>
         {subtitle && (
