@@ -78,6 +78,16 @@ const Header = (prop) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSearch]);
 
+  function handleOpenCart(open){
+    if (open){
+      setShowMiniCart(true);
+      document.body.style.overflowY = 'hidden'
+    }else{
+      setShowMiniCart(false);
+      document.body.style.overflowY = 'auto'
+    }
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.headerMessageContainer}>
@@ -146,8 +156,9 @@ const Header = (prop) => {
               aria-label="Cart"
               className={`${styles.iconButton} ${styles.iconContainer} ${styles.bagIconContainer}`}
               onClick={() => {
-                setShowMiniCart(true);
+                handleOpenCart(true)
                 setMobileMenu(false);
+                
               }}
             >
               <Icon symbol={'bag'}></Icon>
@@ -156,7 +167,7 @@ const Header = (prop) => {
               </div>
             </button>
             <div className={styles.notificationContainer}>
-              <AddNotification openCart={() => setShowMiniCart(true)} />
+              <AddNotification openCart={() => handleOpenCart(true)} />
             </div>
           </div>
         </div>
@@ -220,8 +231,8 @@ const Header = (prop) => {
       </div>
 
       {/* minicart container */}
-      <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)}>
-        <MiniCart />
+      <Drawer visible={showMiniCart} close={() => handleOpenCart(false)}>
+        {showMiniCart && <MiniCart handleOpenCart={handleOpenCart}/>}
       </Drawer>
 
       {/* mobile menu */}

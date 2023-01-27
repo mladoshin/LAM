@@ -8,6 +8,7 @@ function useCart() {
     useEffect(()=>{
         //init store
         let cart_st = localStorage.getItem('cart')
+        console.log(cart_st)
         if(cart_st){
             //cart already exists
             try{
@@ -18,29 +19,36 @@ function useCart() {
             }
             
         }else{
+            console.log("No local cart found")
             // init a cart in local storage
             localStorage.setItem('cart', JSON.stringify(cart))
         }
 
     }, [])
 
-    useEffect(()=>{
-        localStorage.setItem('cart', JSON.stringify(cart))
-    }, [cart])
+    function updateCart(products){
+        setCart(c => {
+            const tmp = {...c, products}
+            console.log(products)
+            localStorage.setItem('cart', JSON.stringify(tmp))
+            return tmp
+        })
+    }
 
     function addProduct(product){
         const {id, name, price, weight, quantity, color, images} = product
         
-        const products = [...cart.products]
-        if (name != '' && price >= 0 && quantity >= 0){
+        console.log(product)
+        const products = [...cart.products, product]
+        if (name && price >= 0 && quantity >= 0){
             console.log('Adding product')
-            products.push(product)
-            setCart(c => ({...c, products}))
+            updateCart(products)
+            // setCart(c => ({...c, products}))
         }
     }
 
     function removeProduct(args){
-        const {rm_id, rm_name} = args
+        const {rm_id, rm_name, rm_idx} = args
         
         const products = [...cart.products]
         let idx = -1
@@ -49,12 +57,21 @@ function useCart() {
             idx = products.findIndex(p => p.id === rm_id)
         }else if(rm_name){
             idx = products.findIndex(p => p.name === rm_name)    
+        }else if (rm_idx > -1){
+            idx = rm_idx
         }
 
         if (idx !== -1){
             products.splice(idx, 1)
-            setCart(c => ({...c, products}))
+            updateCart(products)
+            // setCart(c => ({...c, products}))
         }  
+    }
+
+    function updateProduct({idx, product}){
+        const products = [...cart.products]
+        products[idx] = product
+        updateCart(products)
     }
 
     function setQuantity(product_id, quantity){
@@ -99,15 +116,15 @@ function useCart() {
         }, 0)
         
         //update local cart state
-        const totals = {...cart.totals}
-        total.subtotal = total
-        setCart(c => ({...c, totals}))
+        // const totals = {...cart.totals}
+        // total.subtotal = total
+        // setCart(c => ({...c, totals}))
 
         return total
     }
 
 
-    return {cart, addProduct, removeProduct, setQuantity, setWeight, setColor, getTotal}
+    return {cart, addProduct, removeProduct, setQuantity, setWeight, setColor, getTotal, updateProduct}
 }
 
 export default useCart

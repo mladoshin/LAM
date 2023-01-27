@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import Icon from '../Icons/Icon';
 import * as styles from './AdjustItem.module.css';
 
-const AdjustItem = (props) => {
+const AdjustItem = ({qty, setQty, ...props}) => {
   const { isTransparent } = props;
-  const [qty, setQty] = useState(1);
 
   const handleOnChange = (e) => {
     const num = parseInt(e.target.value);
     setQty(num);
   };
+
 
   return (
     <div

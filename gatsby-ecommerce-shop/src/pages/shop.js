@@ -18,6 +18,7 @@ import capitilize from '../helpers/capitilize';
 import useFilter from '../hooks/useFilter';
 import SortDropdown from '../components/SortDropdown';
 import { generateFilterOptions } from '../helpers/generateFilterOptions';
+import useCart from '../hooks/useCart';
 
 //generate unique set of categories in filters
 function generateProductCategories(products){
@@ -175,12 +176,15 @@ export const query = graphql`
       edges {
         node {
           id
+          strapi_id
           collection_gender
           original_price
           createdAt
           color
+          stock
           options {
             sizes
+            colors
           }
           categories {
             id

@@ -4,10 +4,10 @@ import Swatch from '../Swatch';
 import * as styles from './SwatchList.module.css';
 
 const SwatchList = (props) => {
-  const { swatchList, activeSwatch, setActiveSwatch } = props;
+  const { swatchList, activeSwatch, setActiveSwatch, onClick } = props;
   return (
     <div className={styles.root}>
-      <span className={styles.label}>Select Colour: {activeSwatch.color}</span>
+      <span className={styles.label}>Выберите цвет: {activeSwatch}</span>
       <div className={styles.swatchSelection}>
         {swatchList?.map((colorChoice, index) => {
           return (
@@ -16,6 +16,7 @@ const SwatchList = (props) => {
               data={colorChoice}
               setActiveSwatch={setActiveSwatch}
               isActive={activeSwatch === colorChoice.color}
+              onClick={onClick}
             />
           );
         })}

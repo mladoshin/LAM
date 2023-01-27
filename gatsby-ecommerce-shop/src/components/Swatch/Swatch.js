@@ -3,13 +3,17 @@ import React from 'react';
 import * as styles from './Swatch.module.css';
 
 const Swatch = (props) => {
-  const { data, setActiveSwatch, isActive } = props;
+  const { data, setActiveSwatch, isActive, onClick } = props;
   const colors = data.color.split("-")
 
   return (
     <button
       className={`${styles.root} ${isActive === true ? styles.isActive : ''}`}
       onClick={() => {
+        if (typeof onClick === 'function'){
+          onClick(data.color)
+          return
+        }
         setActiveSwatch(data.color)
         console.log("redirect")
         const path = window.location.pathname.split('/')

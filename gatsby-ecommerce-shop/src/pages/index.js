@@ -58,8 +58,20 @@ const IndexPage = () => {
             title
             slug
             price
+            stock
+            strapi_id
+            color
             image {
               url
+            }
+            description {
+              data {
+                description
+              }
+            }
+            options {
+              sizes
+              colors
             }
           }
         }
@@ -98,14 +110,18 @@ const IndexPage = () => {
         ctaText={'К покупкам'}
         ctaAction={goToShop}
       >
-        <h1 className={styles.description}>Магазин с самыми качественными премиальными кожаными аксессуарами.</h1>
-        </Hero>
+        <h1 className={styles.description}>
+          Магазин с самыми качественными премиальными кожаными аксессуарами.
+        </h1>
+      </Hero>
 
       {/* Message Container */}
       <div className={styles.messageContainer}>
         <p>
-          <span className={styles.gold} style={{fontWeight: 700}}>LAM Leather</span> - магазин лучших
-          кожаных премиальных аксессуаров.
+          <span className={styles.gold} style={{ fontWeight: 700 }}>
+            LAM Leather
+          </span>{' '}
+          - магазин лучших кожаных премиальных аксессуаров.
         </p>
         <p>
           Наши изделия сделаны вручную из натуральной кожи, которая намного
@@ -194,7 +210,10 @@ const IndexPage = () => {
           ctaStyle={styles.ctaCustomButton}
         >
           <h2 className={styles.promo_title}>Ограниченная акция!</h2>
-          <p className={styles.promo_subtitle}>Делись с друзьями своим промокодом и получи скидку 1000 рублей с каждой покупки друга!</p>
+          <p className={styles.promo_subtitle}>
+            Делись с друзьями своим промокодом и получи скидку 1000 рублей с
+            каждой покупки друга!
+          </p>
         </Hero>
       </div>
 

@@ -62,15 +62,16 @@ const ProductPage = (props) => {
     const pr = {
       strapi_id: product.strapi_id,
       image: product.image[0].url,
-      title: product.title,
+      name: product.title,
       slug: product.slug,
       options: {
         color: product.color,
-        size: activeSize
+        size: activeSize,
       },
       price: product.price,
-      quantity: qty
-    }
+      quantity: 1,
+      sizes: product.options?.sizes || []
+    };
 
     addProduct(pr)
   }

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import Button from '../Button';
 import CurrencyFormatter from '../PriceFormatter';
@@ -9,53 +9,106 @@ import { generateMockProductData } from '../../helpers/mock';
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 
 import * as styles from './QuickView.module.css';
+import useCart from '../../hooks/useCart';
+import config from '../../config.json';
+import PriceFormatter from '../PriceFormatter';
 
 const QuickView = (props) => {
-  const { close, buttonTitle = 'Add to Bag' } = props;
-  const sampleProduct = generateMockProductData(1, 'sample')[0];
+  const { addProduct } = useCart();
+  const { close, buttonTitle = 'Добавить в корзину', product } = props;
 
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
-  const [activeSwatch, setActiveSwatch] = useState(
-    sampleProduct.colorOptions[0]
-  );
-  const [activeSize, setActiveSize] = useState(sampleProduct.sizeOptions[0]);
+  const [activeSwatch, setActiveSwatch] = useState(product?.color);
+  const [activeSize, setActiveSize] = useState(null);
+
+  useEffect(() => {
+    if (!product.strapi_id) return;
+
+    setActiveSwatch(product.color);
+    if (Array.isArray(product?.options?.sizes)) {
+      setActiveSize(product?.options?.sizes[0]);
+    }
+  }, [product]);
 
   const handleAddToBag = () => {
     close();
     showNotification();
+
+    console.log(product);
+    if (!product.stock) return;
+
+    const pr = {
+      strapi_id: product.strapi_id,
+      image: product.image[0].url,
+      name: product.title,
+      slug: product.slug,
+      options: {
+        color: product?.color,
+        size: activeSize,
+      },
+      price: product.price,
+      quantity: 1,
+      sizes: product.options?.sizes || []
+    };
+
+    addProduct(pr);
   };
+
+  const baseSlug = product?.slug?.replace(product.color, '');
 
   return (
     <div className={styles.root}>
       <div className={styles.titleContainer}>
-        <h4>Select Options</h4>
+        <h4>Выберите параметры</h4>
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.productContainer}>
-          <span className={styles.productName}>{sampleProduct.name}</span>
+          <span className={styles.productName}>{product?.title}</span>
           <div className={styles.price}>
-            <CurrencyFormatter amount={sampleProduct.price}></CurrencyFormatter>
+            <PriceFormatter amount={product.price} />
           </div>
           <div className={styles.productImageContainer}>
-            <img alt={sampleProduct.alt} src={sampleProduct.image}></img>
+            {Array.isArray(product?.image) ? (
+              <img
+                alt={product.title}
+                src={`${config.STRAPI_API_URL}${product?.image[0].url}`}
+              />
+            ) : (
+              <img
+                alt={product.title}
+                src={`${config.STRAPI_API_URL}${product?.image}`}
+              />
+            )}
           </div>
         </div>
 
-        <div className={styles.sectionContainer}>
-          <SwatchList
-            swatchList={sampleProduct.colorOptions}
-            activeSwatch={activeSwatch}
-            setActiveSwatch={setActiveSwatch}
-          />
-        </div>
+        {/* {product.options?.colors?.length > 0 && (
+          <div className={styles.sectionContainer}>
+            <SwatchList
+              swatchList={product.options?.colors.map((c) => ({
+                color: c,
+                slug: `${baseSlug}${c}`,
+              }))}
+              activeSwatch={activeSwatch}
+              setActiveSwatch={setActiveSwatch}
+              onClick={(value)=>setActiveSwatch(value)}
+            />
+          </div>
+        )} */}
 
-        <div className={styles.sectionContainer}>
-          <SizeList
-            sizeList={sampleProduct.sizeOptions}
-            activeSize={activeSize}
-            setActiveSize={setActiveSize}
-          />
+        {product.options?.sizes?.length > 0 && (
+          <div className={styles.sectionContainer}>
+            <SizeList
+              sizeList={product.options.sizes}
+              activeSize={activeSize}
+              setActiveSize={setActiveSize}
+            />
+          </div>
+        )}
+
+        <div className={styles.description}>
+          <p>{product?.description?.data?.description}</p>
         </div>
 
         <Button onClick={() => handleAddToBag()} fullWidth level={'primary'}>
