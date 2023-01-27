@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 
 const defaultState = {
   open: false,
+  product: {}
 };
 
 export const NotificationContext = createContext(defaultState);
@@ -9,19 +10,19 @@ export const NotificationContext = createContext(defaultState);
 export const NotificationProvider = ({ children }) => {
   const [state, setState] = useState(defaultState);
 
-  const showNotification = () => {
-    setState({ ...state, open: true });
+  const showNotification = (product) => {
+    setState({ ...state, open: true, product });
   };
 
   const closeNotification = () => {
-    setState({ ...state, open: false });
+    setState({ ...state, open: false, product: {} });
   };
 
   useEffect(() => {
     if (state?.open === true) {
       setTimeout(() => {
         closeNotification();
-      }, 2000);
+      }, 10000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);

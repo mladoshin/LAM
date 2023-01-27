@@ -73,6 +73,8 @@ const ProductPage = (props) => {
       sizes: product.options?.sizes || []
     };
 
+    showNotification(pr)
+
     addProduct(pr)
   }
 
@@ -124,10 +126,7 @@ const ProductPage = (props) => {
               <div className={styles.actionContainer}>
                 <div className={styles.addToButtonContainer}>
                   <Button
-                    onClick={() => {
-                      showNotification()
-                      handleAddProduct()
-                    }}
+                    onClick={handleAddProduct}
                     fullWidth
                     level={'primary'}
                   >

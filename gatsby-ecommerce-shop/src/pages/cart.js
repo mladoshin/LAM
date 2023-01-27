@@ -12,7 +12,9 @@ import useCart from '../hooks/useCart';
 import * as styles from './cart.module.css';
 
 const CartPage = (props) => {
-  const { cart, updateProduct, removeProduct } = useCart();
+  const { cart, updateProduct, removeProduct, getTotal } = useCart();
+
+  const subtotal = getTotal()
 
   return (
     <div>
@@ -23,17 +25,17 @@ const CartPage = (props) => {
               <Link className={styles.shopLink} to={'/shop'}>
                 <Icon symbol={'arrow'}></Icon>
                 <span className={styles.continueShopping}>
-                  Continue Shopping
+                  Продолжить покупки
                 </span>
               </Link>
             </div>
             <Brand />
             <div className={styles.loginContainer}>
-              <Link to={'/login'}>Login</Link>
+              <Link to={'/login'}>Вход</Link>
             </div>
           </div>
           <div className={styles.summaryContainer}>
-            <h3>My Bag</h3>
+            <h3>Моя корзина</h3>
             <div className={styles.cartContainer}>
               <div className={styles.cartItemsContainer}>
                 {cart.products?.map((product, idx) => (
@@ -44,7 +46,7 @@ const CartPage = (props) => {
                   />
                 ))}
               </div>
-              <OrderSummary />
+              <OrderSummary subtotal={subtotal}/>
             </div>
           </div>
         </Container>

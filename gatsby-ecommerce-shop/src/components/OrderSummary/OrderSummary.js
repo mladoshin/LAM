@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, navigate } from 'gatsby';
 
 import Button from '../Button';
@@ -6,42 +6,112 @@ import FormInputField from '../FormInputField/FormInputField';
 import CurrencyFormatter from '../PriceFormatter';
 
 import * as styles from './OrderSummary.module.css';
+import PriceFormatter from '../PriceFormatter';
+import { useFormik } from 'formik';
 
-const OrderSummary = (props) => {
+function TextField({ label, ...props }) {
+  return (
+    <div className={styles.inputContainer}>
+      <label htmlFor={props.name}>{label}</label>
+      <input
+        {...props}
+      />
+    </div>
+  );
+}
+const OrderSummary = ({ subtotal = 0 }) => {
   const [coupon, setCoupon] = useState('');
   const [giftCard, setGiftCard] = useState('');
+
+  const total = useMemo(() => {
+    return subtotal;
+  }, [subtotal]);
+
+  const formik = useFormik({
+    initialValues: {
+      city: '',
+      street: '',
+      home: '',
+      flat: '',
+      floor: '',
+      code: '',
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
 
   return (
     <div className={styles.root}>
       <div className={styles.orderSummary}>
-        <span className={styles.title}>order summary</span>
+        <span className={styles.title}>Заказ</span>
         <div className={styles.calculationContainer}>
           <div className={styles.labelContainer}>
-            <span>Subtotal</span>
+            <span>Итого</span>
             <span>
-              <CurrencyFormatter amount={440} appendZero />
+              <PriceFormatter amount={subtotal} />
             </span>
           </div>
+
           <div className={styles.labelContainer}>
-            <span>Shipping</span>
+            <span>Доставка</span>
             <span>---</span>
           </div>
-          <div className={styles.labelContainer}>
-            <span>Tax</span>
-            <span>
-              <CurrencyFormatter amount={0} appendZero />
-            </span>
+
+          <div className={styles.address}>
+            <TextField
+              name="city"
+              value={formik.values.city}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Город"
+            />
+            <TextField
+              value={formik.values.street}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Улица"
+              name="street"
+            />
+            <TextField
+              value={formik.values.home}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Дом"
+              name="home"
+            />
+            <TextField
+              value={formik.values.flat}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Квартира"
+              name="flat"
+            />
+            <TextField
+              value={formik.values.floor}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Этаж"
+              name="floor"
+            />
+            <TextField
+              value={formik.values.code}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Домофон"
+              name="code"
+            />
           </div>
         </div>
         <div className={styles.couponContainer}>
-          <span>Coupon Code</span>
+          <span>Промокод</span>
           <FormInputField
             value={coupon}
             handleChange={(_, coupon) => setCoupon(coupon)}
             id={'couponInput'}
             icon={'arrow'}
           />
-          <span>Gift Card</span>
+          <span>Подарочная карта</span>
           <FormInputField
             value={giftCard}
             handleChange={(_, giftCard) => setGiftCard(giftCard)}
@@ -50,9 +120,9 @@ const OrderSummary = (props) => {
           />
         </div>
         <div className={styles.totalContainer}>
-          <span>Total: </span>
+          <span>Итого: </span>
           <span>
-            <CurrencyFormatter amount={440} appendZero />
+            <PriceFormatter amount={total} />
           </span>
         </div>
       </div>
@@ -62,10 +132,10 @@ const OrderSummary = (props) => {
           fullWidth
           level={'primary'}
         >
-          checkout
+          Оплатить
         </Button>
         <div className={styles.linkContainer}>
-          <Link to={'/shop'}>CONTINUE SHOPPING</Link>
+          <Link to={'/shop'}>Продолжить покупки</Link>
         </div>
       </div>
     </div>

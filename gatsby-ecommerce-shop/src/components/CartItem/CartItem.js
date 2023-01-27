@@ -9,22 +9,22 @@ import QuickView from '../QuickView';
 import * as styles from './CartItem.module.css';
 import { navigate } from 'gatsby';
 import PriceFormatter from '../PriceFormatter';
-import config from '../../config.json'
+import config from '../../config.json';
 
-const CartItem = ({product, removeProduct, updateProduct}) => {
+const CartItem = ({ product, removeProduct, updateProduct }) => {
   const [showQuickView, setShowQuickView] = useState(false);
-  const [qty, setQty] = useState(product?.quantity)
-  const { image, alt="", options, title, price } = product;
+  const [qty, setQty] = useState(product?.quantity);
+  const { image, alt = '', options, title, price } = product;
 
   const handleUpdate = (value) => {
     // setQty(value)
     const tmp = {
       ...product,
-      quantity: value
-    }
-    console.log(tmp)
-    updateProduct(tmp)
-  }
+      quantity: value,
+    };
+    console.log(tmp);
+    updateProduct(tmp);
+  };
 
   return (
     <div className={styles.root}>
@@ -50,17 +50,24 @@ const CartItem = ({product, removeProduct, updateProduct}) => {
         </div>
       </div>
       <div className={styles.adjustItemContainer}>
-        <AdjustItem qty={product?.quantity} setQty={handleUpdate}/>
+        <AdjustItem qty={product?.quantity} setQty={handleUpdate} />
       </div>
       <div className={styles.priceContainer}>
         <PriceFormatter amount={price} />
       </div>
       <div className={styles.removeContainer}>
-        <RemoveItem onClick={removeProduct}/>
+        <RemoveItem onClick={removeProduct} />
       </div>
 
       <Drawer visible={showQuickView} close={() => setShowQuickView(false)}>
-        <QuickView close={() => setShowQuickView(false)} product={product}/>
+        <QuickView
+          close={() => setShowQuickView(false)}
+          product={product}
+          edit={true}
+          open={showQuickView}
+          buttonTitle="Изменить"
+          updateProduct={updateProduct}
+        />
       </Drawer>
     </div>
   );

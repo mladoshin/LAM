@@ -167,7 +167,7 @@ const Header = (prop) => {
               </div>
             </button>
             <div className={styles.notificationContainer}>
-              <AddNotification openCart={() => handleOpenCart(true)} />
+              <AddNotification openCart={() => handleOpenCart(true)}/>
             </div>
           </div>
         </div>

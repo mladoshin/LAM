@@ -14,8 +14,14 @@ import config from '../../config.json';
 import PriceFormatter from '../PriceFormatter';
 
 const QuickView = (props) => {
+  const { updateProduct } = props;
   const { addProduct } = useCart();
-  const { close, buttonTitle = 'Добавить в корзину', product } = props;
+  const {
+    close,
+    buttonTitle = 'Добавить в корзину',
+    product,
+    edit = false,
+  } = props;
 
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
@@ -24,18 +30,26 @@ const QuickView = (props) => {
 
   useEffect(() => {
     if (!product.strapi_id) return;
-
+    let sizes = null
     setActiveSwatch(product.color);
-    if (Array.isArray(product?.options?.sizes)) {
-      setActiveSize(product?.options?.sizes[0]);
-    }
-  }, [product]);
+
+    if(edit){
+      sizes = product?.sizes
+
+      setActiveSize(product.options.size);
+    }else{
+      sizes = product?.options?.sizes
+
+      if (Array.isArray(sizes)) {
+        setActiveSize(sizes[0]);
+      }
+    }  
+    
+  }, [product, props.open]);
 
   const handleAddToBag = () => {
     close();
-    showNotification();
-
-    console.log(product);
+    
     if (!product.stock) return;
 
     const pr = {
@@ -49,11 +63,33 @@ const QuickView = (props) => {
       },
       price: product.price,
       quantity: 1,
-      sizes: product.options?.sizes || []
+      sizes: product.options?.sizes || [],
     };
+
+    showNotification(pr);
 
     addProduct(pr);
   };
+
+  const handleUpdateProduct = () => {
+    const pr = {
+      ...product,
+    };
+
+    pr.options.size = activeSize
+
+    updateProduct(pr)
+  }
+
+  const handleSubmit = () => {
+    if (props.edit){
+      handleUpdateProduct()
+      close()
+      return
+    }
+
+    handleAddToBag()
+  }
 
   const baseSlug = product?.slug?.replace(product.color, '');
 
@@ -97,21 +133,31 @@ const QuickView = (props) => {
           </div>
         )} */}
 
-        {product.options?.sizes?.length > 0 && (
-          <div className={styles.sectionContainer}>
-            <SizeList
-              sizeList={product.options.sizes}
-              activeSize={activeSize}
-              setActiveSize={setActiveSize}
-            />
-          </div>
-        )}
+        {edit
+          ? product?.sizes?.length > 0 && (
+              <div className={styles.sectionContainer}>
+                <SizeList
+                  sizeList={product.sizes}
+                  activeSize={activeSize}
+                  setActiveSize={setActiveSize}
+                />
+              </div>
+            )
+          : product.options?.sizes?.length > 0 && (
+              <div className={styles.sectionContainer}>
+                <SizeList
+                  sizeList={product.options.sizes}
+                  activeSize={activeSize}
+                  setActiveSize={setActiveSize}
+                />
+              </div>
+            )}
 
         <div className={styles.description}>
           <p>{product?.description?.data?.description}</p>
         </div>
 
-        <Button onClick={() => handleAddToBag()} fullWidth level={'primary'}>
+        <Button onClick={handleSubmit} fullWidth level={'primary'}>
           {buttonTitle}
         </Button>
       </div>
