@@ -32,7 +32,7 @@
 }
 
 .detailContainer {
-    margin-left: auto;
+    margin: 0px auto;
     max-width: 800px;
     margin-top: 164px;
 }
@@ -40,19 +40,27 @@
 .detailContainer p{
     font-family: var(--standard-header);
     font-weight: normal;
-    font-size: 42px;
-    line-height: 50px;
+    font-size: 30px;
+    line-height: 45px;
+    margin-bottom: 2rem;
+}
+
+.detailContainer b{
+    font-weight: bold;
+    color: var(--standard-gold);
 }
 
 .imageContainer {
     padding-bottom: 200px;
     margin: 80px 48px 0px 48px;
-    min-height: 600px;
+    height: 400px;
+    overflow: hidden;
 }
 
 .imageContainer img {
-    width: 100%;
+    width: 70%;
     object-fit: cover;
+    margin: 0px 15%;
 }
 
 .content {

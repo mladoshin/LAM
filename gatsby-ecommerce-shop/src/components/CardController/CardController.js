@@ -58,14 +58,14 @@ const CardController = (props) => {
             className={styles.customButtonStyling}
             level={'primary'}
           >
-            view items
+            Смотреть товары
           </Button>
           <Button
             onClick={closeFilter}
             className={styles.customButtonStyling}
             level={'secondary'}
           >
-            close
+            закрыть
           </Button>
         </div>
       </div>
@@ -138,14 +138,14 @@ const CardController = (props) => {
               {category !== undefined && (
                 <div>
                   <Button onClick={closeFilter} fullWidth level={'primary'}>
-                    Apply
+                    Применить
                   </Button>
                   <div
                     className={styles.clearFilterContainer}
                     role={'presentation'}
                     onClick={() => resetFilter()}
                   >
-                    <span className={styles.clearFilter}>clear filters</span>
+                    <span className={styles.clearFilter}>сбросить фильтр</span>
                   </div>
                 </div>
               )}

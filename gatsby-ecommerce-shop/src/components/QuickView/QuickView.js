@@ -19,7 +19,7 @@ const QuickView = (props) => {
   const {
     close,
     buttonTitle = 'Добавить в корзину',
-    product,
+    product={},
     edit = false,
   } = props;
 

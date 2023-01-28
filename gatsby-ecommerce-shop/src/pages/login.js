@@ -79,9 +79,9 @@ const LoginPage = (props) => {
 
       <div className={styles.root}>
         <div className={styles.loginFormContainer}>
-          <h1 className={styles.loginTitle}>Login</h1>
+          <h1 className={styles.loginTitle}>Вход</h1>
           <span className={styles.subtitle}>
-            Please enter your e-mail and password
+            Пожалуйста введите логин и пароль для входа в аккаунт
           </span>
           <form
             noValidate
@@ -93,7 +93,7 @@ const LoginPage = (props) => {
               value={loginForm.email}
               handleChange={(id, e) => handleChange(id, e)}
               type={'email'}
-              labelName={'Email'}
+              labelName={'Логин / Почта'}
               error={errorForm.email}
             />
 
@@ -102,26 +102,26 @@ const LoginPage = (props) => {
               value={loginForm.password}
               handleChange={(id, e) => handleChange(id, e)}
               type={'password'}
-              labelName={'Password'}
+              labelName={'Пароль'}
               error={errorForm.password}
             />
             <div className={styles.forgotPasswordContainer}>
               <Link to={'/forgot'} className={styles.forgotLink}>
-                Forgot Password
+                Забыли пароль?
               </Link>
             </div>
 
             <Button fullWidth type={'submit'} level={'primary'}>
-              LOG IN
+              Вход
             </Button>
-            <span className={styles.createLink}>New Customer? </span>
+            <span className={styles.createLink}>Нет аккаунта? </span>
             <Button
               type={'button'}
               onClick={() => navigate('/signup')}
               fullWidth
               level={'secondary'}
             >
-              create an account
+              Зарегистрироваться
             </Button>
           </form>
         </div>

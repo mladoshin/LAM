@@ -99,31 +99,31 @@ const Footer = (prop) => {
 
                   {Config.social.instagram && (
                     <div
-                      onClick={() => handleSocialClick('instagram')}
+                      onClick={() => handleSocialClick('whatsapp')}
                       role={'presentation'}
                       className={styles.socialIconContainer}
                     >
-                      <Icon symbol={'instagram'}></Icon>
+                      <Icon symbol={'whatsapp'}></Icon>
                     </div>
                   )}
 
                   {Config.social.facebook && (
                     <div
-                      onClick={() => handleSocialClick('facebook')}
+                      onClick={() => handleSocialClick('vk')}
                       role={'presentation'}
                       className={styles.socialIconContainer}
                     >
-                      <Icon symbol={'facebook'}></Icon>
+                      <Icon symbol={'vk'}></Icon>
                     </div>
                   )}
 
                   {Config.social.twitter && (
                     <div
-                      onClick={() => handleSocialClick('twitter')}
+                      onClick={() => handleSocialClick('telegram')}
                       role={'presentation'}
                       className={styles.socialIconContainer}
                     >
-                      <Icon symbol={'twitter'}></Icon>
+                      <Icon symbol={'telegram'}></Icon>
                     </div>
                   )}
                 </div>

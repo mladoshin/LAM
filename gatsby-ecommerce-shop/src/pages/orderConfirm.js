@@ -10,38 +10,37 @@ const OrderConfirmPage = (props) => {
     <Layout disablePaddingBottom>
       <Container size={'medium'}>
         <div className={styles.root}>
-          <h1>Thank You!</h1>
+          <h1>Спасибо за заказ!</h1>
           <p>
-            We are now processing your order. If you have any concerns feel free
-            to email us at customerservice@example.com
+            Мы приняли ваш заказ и скоро свяжемся с вами для подтверждения. Спасибо, что выбрали именно нас!
           </p>
           <div className={styles.actionContainer}>
             <ActionCard
-              title={'Order Status'}
+              title={'Статус заказа'}
               icon={'delivery'}
-              subtitle={'Check your order status'}
+              subtitle={'Проверить статус заказа'}
               link={'/account/orders'}
               size={'lg'}
             />
 
             <ActionCard
-              title={'Shop'}
+              title={'Магазин'}
               icon={'bag'}
-              subtitle={'Continue Shopping'}
+              subtitle={'Продолжить покупки'}
               link={'/shop'}
             />
 
             <ActionCard
-              title={'FAQs'}
+              title={'Часто задаваемые вопросы'}
               icon={'question'}
-              subtitle={'Check out FAQs page'}
+              subtitle={'Посмотрите раздел с часто задаваемыми вопросами'}
               link={'/faq'}
             />
 
             <ActionCard
-              title={'Contact Us'}
+              title={'Свяжитесь с нами'}
               icon={'phone'}
-              subtitle={'Reach out to us'}
+              subtitle={'Напишите нам'}
               link={'/support#contact'}
             />
           </div>

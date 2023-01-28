@@ -76,9 +76,9 @@ const SignupPage = (props) => {
     <Layout disablePaddingBottom={true}>
       <div className={styles.root}>
         <div className={styles.signupFormContainer}>
-          <h1 className={styles.title}>Create Account</h1>
+          <h1 className={styles.title}>Создать аккаунт</h1>
           <span className={styles.subtitle}>
-            Please enter your the information below:
+            Пожалуйста заполните необходимые данные
           </span>
           <form
             noValidate
@@ -90,7 +90,7 @@ const SignupPage = (props) => {
               value={signupForm.firstName}
               handleChange={(id, e) => handleChange(id, e)}
               type={'input'}
-              labelName={'First Name'}
+              labelName={'Имя'}
               error={errorForm.firstName}
             />
 
@@ -99,7 +99,7 @@ const SignupPage = (props) => {
               value={signupForm.lastName}
               handleChange={(id, e) => handleChange(id, e)}
               type={'input'}
-              labelName={'Last Name'}
+              labelName={'Фамилия'}
               error={errorForm.lastName}
             />
 
@@ -108,7 +108,7 @@ const SignupPage = (props) => {
               value={signupForm.email}
               handleChange={(id, e) => handleChange(id, e)}
               type={'email'}
-              labelName={'Email'}
+              labelName={'Почта'}
               error={errorForm.email}
             />
 
@@ -117,21 +117,21 @@ const SignupPage = (props) => {
               value={signupForm.password}
               handleChange={(id, e) => handleChange(id, e)}
               type={'password'}
-              labelName={'Password'}
+              labelName={'Пароль'}
               error={errorForm.password}
             />
 
             <Button fullWidth type={'submit'} level={'primary'}>
-              create account
+              создать аккаунт
             </Button>
-            <span className={styles.reminder}>Have an account?</span>
+            <span className={styles.reminder}>Уже есть аккаунт? </span>
             <Button
               type={'button'}
               onClick={() => navigate('/login')}
               fullWidth
               level={'secondary'}
             >
-              log in
+              войти
             </Button>
           </form>
         </div>

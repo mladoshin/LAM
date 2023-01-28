@@ -9,6 +9,7 @@ import ThemeLink from '../../components/ThemeLink';
 
 import { generateMockBlogData } from '../../helpers/mock';
 import * as styles from './index.module.css';
+import config from "../../config.json"
 
 const BlogPage = (props) => {
   const blogData = generateMockBlogData(6);
@@ -18,11 +19,11 @@ const BlogPage = (props) => {
       <div className={styles.root}>
         <Hero
           maxWidth={'400px'}
-          image={'/blogCover.png'}
-          title={`The new standard of Closing`}
-          ctaLink={'read story'}
+          image={`${config.STRAPI_API_URL}/uploads/photo_2023_01_23_11_46_58_513fee7d73.jpg`}
+          title={`Блог LAM Leather`}
+          ctaLink={'читать статьи'}
           ctaTo={'/blog/sample'}
-          header={'design'}
+          header={'Блог LAM Leather'}
         />
 
         <div className={styles.navContainer}>
@@ -30,31 +31,31 @@ const BlogPage = (props) => {
             onClick={() => navigate('/blog/sample')}
             to={'/blog/sample'}
           >
-            All Posts
+            Все статьи
           </ThemeLink>
           <ThemeLink
             onClick={() => navigate('/blog/sample')}
             to={'/blog/sample'}
           >
-            Design
+            Мода и стиль
           </ThemeLink>
           <ThemeLink
             onClick={() => navigate('/blog/sample')}
             to={'/blog/sample'}
           >
-            Collaboration
+            Обзоры
           </ThemeLink>
           <ThemeLink
             onClick={() => navigate('/blog/sample')}
             to={'/blog/sample'}
           >
-            Interview
+            Интервью
           </ThemeLink>
           <ThemeLink
             onClick={() => navigate('/blog/sample')}
             to={'/blog/sample'}
           >
-            News
+            Новости
           </ThemeLink>
         </div>
 

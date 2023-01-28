@@ -4,8 +4,9 @@ import Container from '../components/Container';
 import Hero from '../components/Hero';
 import ThemeLink from '../components/ThemeLink';
 import Layout from '../components/Layout/Layout';
-
+import config from '../config.json';
 import * as styles from './about.module.css';
+
 const AboutPage = (props) => {
   let historyRef = useRef();
   let valuesRef = useRef();
@@ -26,11 +27,12 @@ const AboutPage = (props) => {
         {/* Hero Container */}
         <Hero
           maxWidth={'900px'}
-          image={'/about.png'}
+          image={`${config.STRAPI_API_URL}/uploads/balmain_img_34baaa46bf.jpg`}
           title={`Sydney \n A British brand since 1860`}
+          header="Магазин LAM Leather"
         />
 
-        <div className={styles.navContainer}>
+        {/* <div className={styles.navContainer}>
           <ThemeLink onClick={() => handleScroll(historyRef)} to={'#history'}>
             History
           </ThemeLink>
@@ -43,30 +45,36 @@ const AboutPage = (props) => {
           >
             Sustainability
           </ThemeLink>
-        </div>
+        </div> */}
 
         <Container size={'large'} spacing={'min'}>
           <div className={styles.detailContainer} ref={historyRef}>
             <p>
-              Founded in 1860, Sydney is an innovative British brand with a
-              contemporary edge. We make timeless everyday luxury clothing.
+              <b>LAM Leather</b> - магазин лучших премиальных аксессуаров из кожи! Мы
+              продаем только качественный товар и следим за тем, чтобы он был в
+              идеальном состоянии перед отправкой нашим клиентам
             </p>
-            <br />
-            <br />
             <p>
-              We created some of the world's first T-shirts and spent decades
-              perfecting the feel of the cotton. Today we are the only brand
-              that makes T-shirts in its own factory in the UK. And we do this
-              in the same factory we have occupied since 1937.
+              Изделия выполнены вручную из кожи, которая намного прочнее и
+              эластичнее, чем более дешевые аналоги. Это в свою очередь помогает
+              создавать более долговечные изделия!
             </p>
+            <p>
+              Аксессуары из магазина LAM Leather позволят вам сэкономить деньги
+              в долгосрочной перспективе и насладиться желаемой покупкой
+            </p>
+            
           </div>
         </Container>
 
         <div className={styles.imageContainer}>
-          <img alt={'shirt brand'} src={'/about1.png'}></img>
+          <img
+            alt={'shirt brand'}
+            src={`${config.STRAPI_API_URL}/uploads/photo_2023_01_16_21_29_19_ddea8967c5.jpg`}
+          />
         </div>
 
-        <Container size={'large'} spacing={'min'}>
+        {/* <Container size={'large'} spacing={'min'}>
           <div className={styles.content}>
             <h3>Our Values</h3>
             <div ref={valuesRef}>
@@ -115,11 +123,14 @@ const AboutPage = (props) => {
               </p>
             </div>
           </div>
-        </Container>
+        </Container> */}
 
-        <div className={styles.imageContainer}>
-          <img alt={'shirt backwards'} src={'/about3.png'}></img>
-        </div>
+        {/* <div className={styles.imageContainer}>
+          <img
+            alt={'shirt brand'}
+            src={`${config.STRAPI_API_URL}/uploads/photo_2023_01_16_21_29_19_ddea8967c5.jpg`}
+          />
+        </div> */}
       </div>
     </Layout>
   );

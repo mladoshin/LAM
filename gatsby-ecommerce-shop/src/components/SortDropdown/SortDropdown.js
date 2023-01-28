@@ -42,7 +42,7 @@ function SortDropdown({ sortState, setSortState, showSort, setShowSort }) {
                 className={`${styles.iconContainer} ${styles.sortContainer}`}
                 id="sort-dropdown"
             >
-                <span>Sort by</span>
+                <span>Сортировать</span>
                 <Icon symbol={'caret'} />
                 <SortPanel open={showSort} options={options} state={sortState} toggleOrder={toggleOrder} setSortOrder={setSortOrder}/>
             </div>

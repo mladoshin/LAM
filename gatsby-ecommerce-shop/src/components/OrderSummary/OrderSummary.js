@@ -3,11 +3,23 @@ import { Link, navigate } from 'gatsby';
 
 import Button from '../Button';
 import FormInputField from '../FormInputField/FormInputField';
-import CurrencyFormatter from '../PriceFormatter';
-
 import * as styles from './OrderSummary.module.css';
 import PriceFormatter from '../PriceFormatter';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const FormSchema = Yup.object().shape({
+  name: Yup.string().required('Обязательное поле!'),
+  email: Yup.string()
+    .email('Неправильный email')
+    .required('Обязательное поле!'),
+  tel: Yup.string().required('Обязательное поле!').length(11),
+  city: Yup.string().required('Обязательное поле!'),
+  street: Yup.string().required('Обязательное поле!'),
+  home: Yup.string().required('Обязательное поле!'),
+  flat: Yup.string().required('Обязательное поле!'),
+  delivery_type: Yup.string().required('Обязательное поле!'),
+});
 
 const delivery_types = {
   courier: 'Курьер',
@@ -17,11 +29,12 @@ const delivery_types = {
   sdek: 'СДЭК',
 };
 
-function TextField({ label, ...props }) {
+function TextField({ touched, error = '', label, ...props }) {
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={props.name}>{label}</label>
       <input {...props} />
+      {touched && error && <i className={styles.error}>{error}</i>}
     </div>
   );
 }
@@ -55,19 +68,46 @@ function McadSelector({ value, onChange, label }) {
   );
 }
 
-function DeliveryType({ types }) {
+function DeliveryType({ error, touched, types, active, onChange }) {
   return (
-    <div>
-      <span>Типы доставки</span>
+    <div style={{ padding: '1rem 0rem' }}>
+      <b>Выберите тип доставки</b>
       <div className={styles.delivery_selector}>
         {types.map((type) => (
-          <div key={type.value}>
+          <div
+            key={type.value}
+            className={active === type.value ? styles.active : ''}
+            onClick={() => onChange(type.value)}
+          >
             <span>{type.label}</span>
           </div>
         ))}
       </div>
+      {error && touched && <i className={styles.error}>{error}</i>}
     </div>
   );
+}
+
+function getDeliveryTypes(city, within_mcad) {
+  let res = [];
+
+  if (within_mcad) {
+    // Москва
+    res = ['courier', 'pickpoint'];
+  } else {
+    if (city.toLowerCase().trim() == 'москва') {
+      // Московская область
+      res = ['courier', 'mail', 'boxberry', 'pickpoint', 'sdek'];
+    } else {
+      // Регионы
+      res = ['mail', 'boxberry', 'pickpoint', 'sdek'];
+    }
+  }
+
+  return res.map((key) => ({
+    label: delivery_types[key],
+    value: key,
+  }));
 }
 
 const OrderSummary = ({ subtotal = 0 }) => {
@@ -86,7 +126,6 @@ const OrderSummary = ({ subtotal = 0 }) => {
       flat: '',
       floor: '',
       code: '',
-      delivery_cost: 0,
       within_mcad: false,
       delivery_type: '',
       types: [],
@@ -94,50 +133,39 @@ const OrderSummary = ({ subtotal = 0 }) => {
     onSubmit: (values) => {
       console.log(values);
     },
+    validationSchema: FormSchema,
   });
 
-  console.log(formik.values);
+  // console.log(formik.values);
+
+  useEffect(() => {
+    console.log('Update');
+    const res = getDeliveryTypes(formik.values.city, formik.values.within_mcad);
+    formik.setFieldValue('types', res);
+  }, [formik.values.city, formik.values.within_mcad]);
 
   function handleChangeMCAD(value) {
     formik.setFieldValue('within_mcad', value);
-    if (value) {
-      const tmp = ['courier', 'pickpoint'];
-      formik.setFieldValue('delivery_cost', 500);
-      formik.setFieldValue(
-        'types',
-        tmp.map((key) => ({
-          label: delivery_types[key],
-          value: key,
-        }))
-      );
-    } else {
-      const tmp = ['mail', 'boxberry', 'pickpoint', 'sdek'];
-      formik.setFieldValue('delivery_cost', 800);
-      formik.setFieldValue(
-        'types',
-        tmp.map((key) => ({
-          label: delivery_types[key],
-          value: key,
-        }))
-      );
-    }
   }
 
-  function handleChangeCity(value){
-    formik.setFieldValue('city', value)
+  function handleChangeCity(value) {
+    formik.setFieldValue('city', value);
 
-    if(value === ""){
-      formik.setFieldValue('types', [])
-      return
+    if (value === '') {
+      formik.setFieldValue('types', []);
+      return;
     }
 
-    if(formik.values.city.toLowerCase() !== 'москва'){
-      handleChangeMCAD(false)
+    if (value.toLowerCase() !== 'москва') {
+      handleChangeMCAD(false);
     }
+    handleChangeMCAD(false);
   }
+
+  console.log(formik);
 
   return (
-    <div className={styles.root}>
+    <form className={styles.root} onSubmit={formik.handleSubmit}>
       <div className={styles.orderSummary}>
         <span className={styles.title}>Заказ</span>
         <div className={styles.calculationContainer}>
@@ -147,19 +175,49 @@ const OrderSummary = ({ subtotal = 0 }) => {
               <PriceFormatter amount={subtotal} />
             </span>
           </div>
+          <b>Контакты</b>
+          <div className={styles.address} style={{ marginBottom: '2rem' }}>
+            <TextField
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Имя"
+              error={formik.errors.name}
+              touched={formik.touched.name}
+            />
 
-          <div className={styles.labelContainer}>
-            <span>Доставка</span>
-            <PriceFormatter amount={formik.values.delivery_cost} />
+            <TextField
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Почта"
+              error={formik.errors.email}
+              touched={formik.touched.email}
+            />
+
+            <TextField
+              name="tel"
+              value={formik.values.tel}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Телефон"
+              error={formik.errors.tel}
+              touched={formik.touched.tel}
+            />
           </div>
 
+          <b>Адрес доставки</b>
           <div className={styles.address}>
             <TextField
               name="city"
               value={formik.values.city}
-              onChange={e => handleChangeCity(e.target.value)}
+              onChange={(e) => handleChangeCity(e.target.value)}
               onBlur={formik.handleBlur}
               label="Город"
+              error={formik.errors.city}
+              touched={formik.touched.city}
             />
 
             {formik.values.city.toLowerCase() === 'москва' && (
@@ -176,6 +234,8 @@ const OrderSummary = ({ subtotal = 0 }) => {
               onBlur={formik.handleBlur}
               label="Улица"
               name="street"
+              error={formik.errors.street}
+              touched={formik.touched.street}
             />
             <TextField
               value={formik.values.home}
@@ -183,6 +243,8 @@ const OrderSummary = ({ subtotal = 0 }) => {
               onBlur={formik.handleBlur}
               label="Дом"
               name="home"
+              error={formik.errors.home}
+              touched={formik.touched.home}
             />
             <TextField
               value={formik.values.flat}
@@ -190,6 +252,8 @@ const OrderSummary = ({ subtotal = 0 }) => {
               onBlur={formik.handleBlur}
               label="Квартира"
               name="flat"
+              error={formik.errors.flat}
+              touched={formik.touched.flat}
             />
             <TextField
               value={formik.values.floor}
@@ -205,16 +269,15 @@ const OrderSummary = ({ subtotal = 0 }) => {
               label="Домофон"
               name="code"
             />
-            {/* <Button
-              onClick={() => navigate('/orderConfirm')}
-              fullWidth
-              level='secondary'
-            >
-              Расчитать стоимость
-            </Button> */}
           </div>
 
-          <DeliveryType types={formik.values.types} />
+          <DeliveryType
+            types={formik.values.types}
+            active={formik.values.delivery_type}
+            onChange={(val) => formik.setFieldValue('delivery_type', val)}
+            error={formik.errors.delivery_type}
+            touched={formik.touched.delivery_type}
+          />
         </div>
         <div className={styles.couponContainer}>
           <span>Промокод</span>
@@ -241,9 +304,11 @@ const OrderSummary = ({ subtotal = 0 }) => {
       </div>
       <div className={styles.actionContainer}>
         <Button
-          onClick={() => navigate('/orderConfirm')}
           fullWidth
           level={'primary'}
+          // disabled={!formik.isValid}
+          type="submit"
+          className={!formik.isValid ? styles.disabled : ''}
         >
           Оплатить
         </Button>
@@ -251,7 +316,7 @@ const OrderSummary = ({ subtotal = 0 }) => {
           <Link to={'/shop'}>Продолжить покупки</Link>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

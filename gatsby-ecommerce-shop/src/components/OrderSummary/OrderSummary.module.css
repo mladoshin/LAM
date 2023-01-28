@@ -114,6 +114,7 @@
   position: relative;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
+  margin-top: 1rem;
 }
 
 .delivery_selector > div {
@@ -177,4 +178,19 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
+}
+
+.active{
+  color: #fff !important;
+  background-color: var(--standard-gold);
+}
+
+.error{
+  font-size: 14px;
+  color: crimson;
+}
+
+.disabled{
+  background-color: #bbb !important;
+  border-color: #bbb !important;
 }

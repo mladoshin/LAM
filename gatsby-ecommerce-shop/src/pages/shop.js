@@ -36,6 +36,7 @@ function generateProductCategories(products){
 
 const gender_options = {
   category: 'gender',
+  label: "Пол",
   items: ['men', 'women'].map(el => ({name: el, value: true}))
 }
 
@@ -111,7 +112,7 @@ const ShopPage = (props) => {
         />
         <Container size={'large'} spacing={'min'}>
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>{filteredProducts.length} items</span>
+            <span className={styles.itemCount}>{filteredProducts.length} товаров</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -119,7 +120,7 @@ const ShopPage = (props) => {
                 onClick={() => setShowFilter(!showFilter)}
               >
                 <Icon symbol={'filter'} />
-                <span>Filters</span>
+                <span>Фильтры</span>
               </div>
               <SortDropdown sortState={sortState} setSortState={setSortState} showSort={showSort} setShowSort={setShowSort} />
             </div>
@@ -137,19 +138,19 @@ const ShopPage = (props) => {
             ))}
           </div>
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>{filteredProducts.length} items</span>
+            <span className={styles.mobileItemCount}>{filteredProducts.length} товаров</span>
             <ProductCardGrid data={filteredProducts}></ProductCardGrid>
           </div>
-          <div className={styles.loadMoreContainer}>
+          {/* <div className={styles.loadMoreContainer}>
             <span>6 of 456</span>
             <Button fullWidth level={'secondary'}>
               LOAD MORE
             </Button>
-          </div>
+          </div> */}
         </Container>
       </div>
 
-      <LayoutOption />
+      {/* <LayoutOption /> */}
     </Layout>
   );
 };

@@ -40,7 +40,8 @@
     "react-helmet": "^6.1.0",
     "react-netlify-identity-widget": "^0.2.7",
     "react-slick": "^0.29.0",
-    "sass": "^1.57.1"
+    "sass": "^1.57.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "gatsby-plugin-netlify": "^5.0.0",

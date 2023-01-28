@@ -31,6 +31,7 @@ function generateFilterOptions(node, gender = null) {
         });
         extraSets.push({
             category: f,
+            label: 'Размер',
             items: Array.from(fset).sort((a, b) => sortOptions(a, b, f)).map(el => ({ name: el, value: true }))
         })
     })
@@ -41,10 +42,12 @@ function generateFilterOptions(node, gender = null) {
     const allFilters = [
         {
             category: "color",
+            label: 'Цвет',
             items: Array.from(colorSet).sort((a, b) => sortOptions(a, b)).map(c => ({ name: c, value: true }))
         },
         {
             category: "brand",
+            label: 'Бренд',
             items: Array.from(brandSet).sort((a, b) => sortOptions(a, b)).map(b => ({ name: b, value: true }))
         },
         ...extraSets

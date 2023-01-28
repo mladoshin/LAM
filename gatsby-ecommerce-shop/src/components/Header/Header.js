@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, createRef, useMemo } from 'react';
 import { Link, navigate } from 'gatsby';
 
 import { isAuth } from '../../helpers/general';
@@ -14,8 +14,10 @@ import Icon from '../Icons/Icon';
 import MiniCart from '../MiniCart';
 import MobileNavigation from '../MobileNavigation';
 import * as styles from './Header.module.css';
+import useCart from '../../hooks/useCart';
 
 const Header = (prop) => {
+  const {cart} = useCart()
   const [showMiniCart, setShowMiniCart] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
@@ -27,7 +29,7 @@ const Header = (prop) => {
   const [search, setSearch] = useState('');
 
   const searchRef = createRef();
-  const bannerMessage = 'Free shipping worldwide';
+  const bannerMessage = 'Скидка 15% на первую покупку по промокоду LAM2023!';
   const searchSuggestions = [
     'Oversize sweaters',
     'Lama Pajamas',
@@ -50,6 +52,10 @@ const Header = (prop) => {
     navigate(`/search?q=${search}`);
     setShowSearch(false);
   };
+
+  const product_count = useMemo(()=>{
+    return cart?.products.length
+  }, [cart.products])
 
   // disable active menu when show menu is hidden
   useEffect(() => {
@@ -129,7 +135,7 @@ const Header = (prop) => {
           </div>
           <Brand />
           <div className={styles.actionContainers}>
-            <button
+            {/* <button
               aria-label="Search"
               className={`${styles.iconButton} ${styles.iconContainer}`}
               onClick={() => {
@@ -137,21 +143,21 @@ const Header = (prop) => {
               }}
             >
               <Icon symbol={'search'}></Icon>
-            </button>
-            <Link
+            </button> */}
+            {/* <Link
               aria-label="Favorites"
               href="/account/favorites"
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
               <Icon symbol={'heart'}></Icon>
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               aria-label="Orders"
               href={isAuth() ? '/login' : '/account/orders/'}
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
               <Icon symbol={'user'}></Icon>
-            </Link>
+            </Link> */}
             <button
               aria-label="Cart"
               className={`${styles.iconButton} ${styles.iconContainer} ${styles.bagIconContainer}`}
@@ -163,7 +169,7 @@ const Header = (prop) => {
             >
               <Icon symbol={'bag'}></Icon>
               <div className={styles.bagNotification}>
-                <span>1</span>
+                <span>{product_count || ''}</span>
               </div>
             </button>
             <div className={styles.notificationContainer}>
