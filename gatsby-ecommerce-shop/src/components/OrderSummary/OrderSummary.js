@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, navigate } from 'gatsby';
 
 import Button from '../Button';
@@ -9,16 +9,67 @@ import * as styles from './OrderSummary.module.css';
 import PriceFormatter from '../PriceFormatter';
 import { useFormik } from 'formik';
 
+const delivery_types = {
+  courier: 'Курьер',
+  mail: 'Почта',
+  boxberry: 'Boxberry',
+  pickpoint: 'PickPoint',
+  sdek: 'СДЭК',
+};
+
 function TextField({ label, ...props }) {
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={props.name}>{label}</label>
-      <input
-        {...props}
-      />
+      <input {...props} />
     </div>
   );
 }
+
+function McadSelector({ value, onChange, label }) {
+  return (
+    <div className={styles.mcad_selector}>
+      <span style={{ display: 'block' }}>{label}</span>
+      <form>
+        <div>
+          <input
+            type="radio"
+            name="not_mcad"
+            checked={!value}
+            onChange={() => onChange(false)}
+          />
+          <label htmlFor="not_mcad">Нет</label>
+        </div>
+
+        <div>
+          <input
+            type="radio"
+            name="mcad"
+            checked={value}
+            onChange={() => onChange(true)}
+          />
+          <label htmlFor="mcad">Да</label>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function DeliveryType({ types }) {
+  return (
+    <div>
+      <span>Типы доставки</span>
+      <div className={styles.delivery_selector}>
+        {types.map((type) => (
+          <div key={type.value}>
+            <span>{type.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const OrderSummary = ({ subtotal = 0 }) => {
   const [coupon, setCoupon] = useState('');
   const [giftCard, setGiftCard] = useState('');
@@ -35,11 +86,55 @@ const OrderSummary = ({ subtotal = 0 }) => {
       flat: '',
       floor: '',
       code: '',
+      delivery_cost: 0,
+      within_mcad: false,
+      delivery_type: '',
+      types: [],
     },
     onSubmit: (values) => {
       console.log(values);
     },
   });
+
+  console.log(formik.values);
+
+  function handleChangeMCAD(value) {
+    formik.setFieldValue('within_mcad', value);
+    if (value) {
+      const tmp = ['courier', 'pickpoint'];
+      formik.setFieldValue('delivery_cost', 500);
+      formik.setFieldValue(
+        'types',
+        tmp.map((key) => ({
+          label: delivery_types[key],
+          value: key,
+        }))
+      );
+    } else {
+      const tmp = ['mail', 'boxberry', 'pickpoint', 'sdek'];
+      formik.setFieldValue('delivery_cost', 800);
+      formik.setFieldValue(
+        'types',
+        tmp.map((key) => ({
+          label: delivery_types[key],
+          value: key,
+        }))
+      );
+    }
+  }
+
+  function handleChangeCity(value){
+    formik.setFieldValue('city', value)
+
+    if(value === ""){
+      formik.setFieldValue('types', [])
+      return
+    }
+
+    if(formik.values.city.toLowerCase() !== 'москва'){
+      handleChangeMCAD(false)
+    }
+  }
 
   return (
     <div className={styles.root}>
@@ -55,17 +150,26 @@ const OrderSummary = ({ subtotal = 0 }) => {
 
           <div className={styles.labelContainer}>
             <span>Доставка</span>
-            <span>---</span>
+            <PriceFormatter amount={formik.values.delivery_cost} />
           </div>
 
           <div className={styles.address}>
             <TextField
               name="city"
               value={formik.values.city}
-              onChange={formik.handleChange}
+              onChange={e => handleChangeCity(e.target.value)}
               onBlur={formik.handleBlur}
               label="Город"
             />
+
+            {formik.values.city.toLowerCase() === 'москва' && (
+              <McadSelector
+                value={formik.values.within_mcad}
+                onChange={handleChangeMCAD}
+                label="В пределах МКАД"
+              />
+            )}
+
             <TextField
               value={formik.values.street}
               onChange={formik.handleChange}
@@ -101,7 +205,16 @@ const OrderSummary = ({ subtotal = 0 }) => {
               label="Домофон"
               name="code"
             />
+            {/* <Button
+              onClick={() => navigate('/orderConfirm')}
+              fullWidth
+              level='secondary'
+            >
+              Расчитать стоимость
+            </Button> */}
           </div>
+
+          <DeliveryType types={formik.values.types} />
         </div>
         <div className={styles.couponContainer}>
           <span>Промокод</span>

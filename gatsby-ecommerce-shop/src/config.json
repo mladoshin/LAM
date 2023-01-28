@@ -244,5 +244,9 @@
       ]
     }
   ],
-  "STRAPI_API_URL": "http://localhost:1337"
+  "STRAPI_API_URL": "http://localhost:1337",
+  "delivery": {
+    "mcad": 500,
+    "not_mcad": 800
+  }
 }
